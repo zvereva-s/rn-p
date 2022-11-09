@@ -1,16 +1,18 @@
 import React from "react";
 import { StyleSheet, View, ImageBackground, Text } from "react-native";
 
+import LoginScreen from "./screens/LoginScreen";
+import RegistrationScreen from "./screens/RegistrationScreen";
+
 export default function App() {
   return (
     <View style={styles.container}>
       <ImageBackground
         style={styles.image}
-        source={require("./assets/leaves.png")}
+        source={require("./assets/photo_bg.png")}
       >
-        <View style={styles[`textWrapper`]}>
-          <Text style={styles.text}>wish you well ... in hell👺</Text>
-        </View>
+        {/* <LoginScreen /> */}
+        <RegistrationScreen />
       </ImageBackground>
     </View>
   );
@@ -24,14 +26,6 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     resizeMode: "cover",
-    justifyContent: "center",
-  },
-  textWrapper: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  text: {
-    color: "black",
-    fontSize: "20",
+    justifyContent: "flex-end",
   },
 });
