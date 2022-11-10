@@ -3,36 +3,39 @@ import { StyleSheet } from "react-native";
 export const style = StyleSheet.create({
   formRegister: {
     position: "relative",
+    bottom: 0,
+
     alignItems: "center",
 
-    height: 549,
     backgroundColor: "#fff",
 
     borderRadius: 25,
     paddingTop: 92,
+    paddingBottom: 66,
     paddingLeft: 16,
     paddingRight: 16,
   },
   formLogin: {
     position: "relative",
     alignItems: "center",
+    bottom: 0,
 
-    height: 489,
     backgroundColor: "#fff",
 
     borderRadius: 25,
     paddingTop: 32,
+    paddingBottom: 130,
     paddingLeft: 16,
     paddingRight: 16,
   },
   linkWrapperShowRegister: {
     position: "absolute",
-    bottom: 245,
+    bottom: 203,
     right: 32,
   },
   linkWrapperShowLogin: {
     position: "absolute",
-    bottom: 301,
+    bottom: 268,
     right: 32,
   },
   imageWrapper: {
@@ -44,8 +47,6 @@ export const style = StyleSheet.create({
 
     width: 120,
     height: 120,
-
-    marginBottom: 32,
   },
   iconWrapper: {
     position: "absolute",

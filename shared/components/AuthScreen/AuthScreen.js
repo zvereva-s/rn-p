@@ -1,19 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Image } from "react-native";
 
 import TextField from "../TextField";
 import Title from "../Title";
 import Button from "../Button";
 import Link from "../Link";
-
 import IconButton from "../IconButton";
+
+import { handlerStyleForm } from "../../utils/utils";
 
 import { style } from "./style";
 
 function AuthScreen({ type, text }) {
+  const { formLogin, formRegister } = style;
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const register = type === "register" ? true : false;
+
+  const formStyle = handlerStyleForm(
+    type,
+    isShowKeyboard,
+    formRegister,
+    formLogin
+  );
+  function handleFocus() {
+    setIsShowKeyboard(true);
+  }
+  function handleBlur() {
+    setIsShowKeyboard(false);
+  }
+
   return (
-    <View style={register ? style.formRegister : style.formLogin}>
+    <View style={formStyle}>
       {register && (
         <View style={style.imageWrapper}>
           <Image />
@@ -24,9 +41,27 @@ function AuthScreen({ type, text }) {
       )}
 
       <Title text={text} />
-      {register && <TextField type="inputAuth" placeholder="Логин" />}
-      <TextField type="inputAuth" placeholder="Адрес электронной почты" />
-      <TextField type="inputAuth" secureTextEntry={true} placeholder="Пароль" />
+      {register && (
+        <TextField
+          type="inputAuth"
+          placeholder="Логин"
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+        />
+      )}
+      <TextField
+        type="inputAuth"
+        placeholder="Адрес электронной почты"
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+      />
+      <TextField
+        type="inputAuth"
+        secureTextEntry={true}
+        placeholder="Пароль"
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+      />
       <View
         style={
           register ? style.linkWrapperShowRegister : style.linkWrapperShowLogin
@@ -34,6 +69,7 @@ function AuthScreen({ type, text }) {
       >
         <Link text="Показать" />
       </View>
+
       {register && <Button text="Зарегистрироваться" />}
       {!register && <Button text="Войти" />}
       <View style={style.linkWrapperPath}>

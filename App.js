@@ -1,20 +1,39 @@
 import React from "react";
-import { StyleSheet, View, ImageBackground, Text } from "react-native";
+import {
+  Platform,
+  Keyboard,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  StyleSheet,
+  View,
+  ImageBackground,
+  Text,
+} from "react-native";
 
 import LoginScreen from "./screens/LoginScreen";
 import RegistrationScreen from "./screens/RegistrationScreen";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <ImageBackground
-        style={styles.image}
-        source={require("./assets/photo_bg.png")}
-      >
-        {/* <LoginScreen /> */}
-        <RegistrationScreen />
-      </ImageBackground>
-    </View>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+      }}
+    >
+      <View style={styles.container}>
+        <ImageBackground
+          style={styles.image}
+          source={require("./assets/photo_bg.png")}
+        >
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+          >
+            <LoginScreen />
+            {/* <RegistrationScreen /> */}
+          </KeyboardAvoidingView>
+        </ImageBackground>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 

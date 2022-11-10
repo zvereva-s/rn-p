@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     lineHeight: 32,
     letterSpacing: 0.01,
     color: "#212121",
-    marginBottom: 23,
+    marginBottom: 33,
   },
 });
 export default Title;

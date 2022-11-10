@@ -1,12 +1,21 @@
 import React from "react";
 import { StyleSheet, TextInput } from "react-native";
 
-function TextField({ key, type, placeholder, secureTextEntry }) {
+function TextField({
+  key,
+  type,
+  placeholder,
+  secureTextEntry,
+  onFocus,
+  onBlur,
+}) {
   return (
     <TextInput
       style={styles[type]}
       secureTextEntry={secureTextEntry}
       placeholder={placeholder}
+      onFocus={onFocus}
+      onBlur={onBlur}
     />
   );
 }
@@ -24,7 +33,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginTop: 16,
 
-    padding: 16,
+    paddingLeft: 16,
 
     height: 40,
     width: "100%",
