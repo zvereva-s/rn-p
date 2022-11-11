@@ -17,6 +17,9 @@ export default function LoginScreen() {
   const [keyboardStatus, setKeyboardStatus] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
+  const [emailIsActiveStyle, setEmailIsActiveStyle] = useState({});
+  const [passwordIsActiveStyle, setPasswordIsActiveStyle] = useState({});
+
   const [state, setState] = useState({
     email: "",
     password: "",
@@ -73,22 +76,32 @@ export default function LoginScreen() {
                 }}
               >
                 <TextInput
-                  style={styles.input}
+                  style={{ ...styles.input, ...emailIsActiveStyle }}
                   placeholder="Адрес электронной почты"
                   keyboardType="email - address"
                   value={email}
-                  onFocus={() => setKeyboardStatus(true)}
+                  onFocus={() => {
+                    setEmailIsActiveStyle(styles.isFocused);
+                    setKeyboardStatus(true);
+                  }}
+                  onBlur={() => setEmailIsActiveStyle({})}
                   onChangeText={(value) => {
                     setState((prev) => ({ ...prev, email: value }));
                   }}
                 />
                 <TextInput
-                  style={styles.input}
+                  style={{ ...styles.input, ...passwordIsActiveStyle }}
                   placeholder="Пароль"
                   secureTextEntry={secureTextEntry}
                   value={password}
-                  onFocus={() => setKeyboardStatus(true)}
-                  onBlur={() => setKeyboardStatus(!keyboardStatus)}
+                  onFocus={() => {
+                    setKeyboardStatus(true);
+                    setPasswordIsActiveStyle(styles.isFocused);
+                  }}
+                  onBlur={() => {
+                    setKeyboardStatus(!keyboardStatus);
+                    setPasswordIsActiveStyle({});
+                  }}
                   onChangeText={(value) => {
                     setState((prev) => ({ ...prev, password: value }));
                   }}
@@ -171,6 +184,10 @@ const styles = StyleSheet.create({
 
     height: 40,
     width: "100%",
+  },
+  isFocused: {
+    backgroundColor: "#FFF",
+    borderColor: "#FF6C00",
   },
   linkShow: {
     position: "absolute",

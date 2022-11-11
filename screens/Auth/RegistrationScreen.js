@@ -19,6 +19,9 @@ import IconButton from "../../shared/components/IconButton/IconButton";
 export default function RegistrationScreen() {
   const [keyboardStatus, setKeyboardStatus] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [loginIsActiveStyle, setLoginIsActiveStyle] = useState({});
+  const [emailIsActiveStyle, setEmailIsActiveStyle] = useState({});
+  const [passwordIsActiveStyle, setPasswordIsActiveStyle] = useState({});
 
   const [state, setState] = useState({
     login: "",
@@ -85,31 +88,53 @@ export default function RegistrationScreen() {
                 }}
               >
                 <TextInput
-                  style={styles.input}
+                  style={{ ...styles.input, ...loginIsActiveStyle }}
                   placeholder="Логин"
+                  selectionColor="orange"
+                  activeUnderlineColor="orange"
                   value={login}
-                  onFocus={() => setKeyboardStatus(true)}
+                  onFocus={() => {
+                    setLoginIsActiveStyle(styles.isFocused);
+                    setKeyboardStatus(true);
+                  }}
+                  onBlur={() => setLoginIsActiveStyle({})}
                   onChangeText={(value) => {
                     setState((prev) => ({ ...prev, login: value }));
                   }}
                 />
                 <TextInput
-                  style={styles.input}
+                  style={{
+                    ...styles.input,
+                    ...emailIsActiveStyle,
+                  }}
                   placeholder="Адрес электронной почты"
                   keyboardType="email - address"
                   value={email}
-                  onFocus={() => setKeyboardStatus(true)}
+                  onFocus={() => {
+                    setEmailIsActiveStyle(styles.isFocused);
+                    setKeyboardStatus(true);
+                  }}
+                  onBlur={() => setEmailIsActiveStyle({})}
                   onChangeText={(value) => {
                     setState((prev) => ({ ...prev, email: value }));
                   }}
                 />
                 <TextInput
-                  style={styles.input}
+                  style={{
+                    ...styles.input,
+                    ...passwordIsActiveStyle,
+                  }}
                   placeholder="Пароль"
                   secureTextEntry={secureTextEntry}
                   value={password}
-                  onFocus={() => setKeyboardStatus(true)}
-                  onBlur={() => setKeyboardStatus(!keyboardStatus)}
+                  onFocus={() => {
+                    setPasswordIsActiveStyle(styles.isFocused);
+                    setKeyboardStatus(true);
+                  }}
+                  onBlur={() => {
+                    setPasswordIsActiveStyle({});
+                    setKeyboardStatus(!keyboardStatus);
+                  }}
                   onChangeText={(value) => {
                     setState((prev) => ({ ...prev, password: value }));
                   }}
@@ -190,12 +215,13 @@ const styles = StyleSheet.create({
   },
   input: {
     position: "relative",
-    backgroundColor: "#F6F6F6",
 
     borderWidth: 1,
     borderColor: "#E8E8E8",
     borderStyle: "solid",
     borderRadius: 8,
+
+    backgroundColor: "#F6F6F6",
 
     marginTop: 16,
 
@@ -204,6 +230,11 @@ const styles = StyleSheet.create({
     height: 40,
     width: "100%",
   },
+  isFocused: {
+    backgroundColor: "#FFF",
+    borderColor: "#FF6C00",
+  },
+
   linkShow: {
     position: "absolute",
     bottom: 137,
