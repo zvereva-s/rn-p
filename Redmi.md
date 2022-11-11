@@ -5,12 +5,13 @@ HomeWork 1
 Homework 2
 
 Registration Screen
+<br>
 <img src='https://github.com/zvereva-s/rn-p/raw/main/images/RegistrationScreen.png' width='375' heigth='auto'/>
-![](https://github.com/zvereva-s/rn-p/raw/main/images/RegistrationScreen.png)
-![](<https://github.com/zvereva-s/rn-p/raw/main/images/RegistrationScreen(password).png>)
-![](https://github.com/zvereva-s/rn-p/raw/main/images/RegistrationScreen(show password).png)
-![](<https://github.com/zvereva-s/rn-p/raw/main/images/RegistrationScreen(keyboard).png>)
+<img src='https://github.com/zvereva-s/rn-p/raw/main/images/RegistrationScreen(password).png' width='375' heigth='auto'/>
+<img src='https://github.com/zvereva-s/rn-p/raw/main/images/RegistrationScreen(show password).png' width='375' heigth='auto'/>
+<img src='https://github.com/zvereva-s/rn-p/raw/main/images/RegistrationScreen(keyboard).png' width='375' heigth='auto'/>
 
 Login Screen
-![](https://github.com/zvereva-s/rn-p/raw/main/images/LoginScreen.png)
-![](<https://github.com/zvereva-s/rn-p/raw/main/images/LoginScreen(keyboard).png)
+<br>
+<img src='https://github.com/zvereva-s/rn-p/raw/main/images/LoginScreen.png' width='375' heigth='auto'/>
+<img src='https://github.com/zvereva-s/rn-p/raw/main/images/LoginScreen(keyboard).png' width='375' heigth='auto'/>
