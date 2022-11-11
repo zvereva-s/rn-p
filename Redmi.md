@@ -16,7 +16,7 @@ State Registration Screen
 
 Login Screen
 <br>
-<img src='https://github.com/zvereva-s/rn-p/raw/main/images/LoginScreen.png' width='375' heigth='auto'/>
+<img src='https://github.com/zvereva-s/rn-p/raw/main/images/LoginScreen.png' width='188' heigth='auto'/>
 <img src='https://github.com/zvereva-s/rn-p/raw/main/images/LoginScreen(keyboard).png' width='188' heigth='auto'/>
 
 State Login Screen
