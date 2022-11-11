@@ -1,8 +1,8 @@
-HomeWork 1
+<h3>HomeWork 1</h3>
 
 ![](https://github.com/zvereva-s/rn-p/raw/main/images/hw-01.jpg)
 
-Homework 2
+<h3>Homework 2</h3>
 
 Registration Screen
 <br>
@@ -22,5 +22,5 @@ Login Screen
 State Login Screen
 <img src='https://github.com/zvereva-s/rn-p/raw/main/images/LoginScreen-state.jpg' width='auto' heigth='auto'/>
 
-<b>HomeWork 3. Debugger</b>
+<h3>HomeWork 3. Debugger</h3>
 <img src='https://github.com/zvereva-s/rn-p/raw/main/images/Debugger.jpg' width='auto' heigth='auto'/>
