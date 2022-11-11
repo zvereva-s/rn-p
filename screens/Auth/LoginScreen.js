@@ -44,7 +44,7 @@ export default function LoginScreen() {
   function hideKeyboard() {
     setKeyboardStatus(false);
     Keyboard.dismiss();
-    // console.log({ state });
+    console.log({ state });
     setState({
       email: "",
       password: "",
