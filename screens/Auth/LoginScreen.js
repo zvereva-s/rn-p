@@ -13,7 +13,7 @@ import {
   Dimensions,
 } from "react-native";
 
-export default function LoginScreen() {
+export default function LoginScreen({ navigation }) {
   const [keyboardStatus, setKeyboardStatus] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
@@ -119,7 +119,12 @@ export default function LoginScreen() {
                 >
                   <Text style={styles.btnTitle}>Войти</Text>
                 </TouchableOpacity>
-                <Text style={styles.linkPath}>
+                <Text
+                  style={styles.linkPath}
+                  onPress={() => {
+                    navigation.navigate("Registration");
+                  }}
+                >
                   Нет аккаунта? Зарегистрироваться
                 </Text>
               </View>

@@ -16,7 +16,10 @@ import {
 
 import IconButton from "../../shared/components/IconButton/IconButton";
 
-export default function RegistrationScreen() {
+export default function RegistrationScreen({ navigation }) {
+  //
+  console.log({ navigation });
+  //
   const [keyboardStatus, setKeyboardStatus] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [loginIsActiveStyle, setLoginIsActiveStyle] = useState({});
@@ -152,7 +155,14 @@ export default function RegistrationScreen() {
                 >
                   <Text style={styles.btnTitle}>Зарегистрироваться</Text>
                 </TouchableOpacity>
-                <Text style={styles.linkPath}>Уже есть аккаунт? Войти</Text>
+                <Text
+                  style={styles.linkPath}
+                  onPress={() => {
+                    navigation.navigate("Login");
+                  }}
+                >
+                  Уже есть аккаунт? Войти
+                </Text>
               </View>
             </View>
           </KeyboardAvoidingView>
