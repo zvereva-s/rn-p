@@ -27,12 +27,12 @@ State Login Screen
 
 <h3>HomeWork 4</h3>
 <h4>Задание</h4>
-1. Создать экран PostsScreen
-2. Создать экран CreatePostsScreen
-3. 4. Создать экран CommentsScreen
-5. Создать экран ProfileScreen
-6. Создать экран MapScreen
-7. Создать экран Home
+1. Создать экран PostsScreen <br>
+2. Создать экран CreatePostsScreen <br>
+3. 4. Создать экран CommentsScreen <br>
+5. Создать экран ProfileScreen <br>
+6. Создать экран MapScreen <br>
+7. Создать экран Home <br>
 
 8. ✅ Подключить в проект навигацию.
 9. ✅ Добавить в проект переходы между экранами LoginScreen, RegistrationScreen при помощи компонента createStackNavigator
