@@ -8,7 +8,8 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import LoginScreen from "./screens/Auth/LoginScreen";
 import RegistrationScreen from "./screens/Auth/RegistrationScreen";
-import Home from "./screens/Home";
+import Home from "./screens/Home/Home";
+import PostsScreen from "./screens/ Posts/PostsScreen";
 
 const AuthStack = createStackNavigator();
 
@@ -53,7 +54,8 @@ export default function App() {
             component={LoginScreen}
           />
         </AuthStack.Navigator> */}
-      <Home />
+      {/* <Home /> */}
+      <PostsScreen />
     </View>
     // </NavigationContainer>
   );

@@ -7,6 +7,7 @@ import { deleteIcon } from "./icons.js";
 import { commentIcon } from "./icons.js";
 import { likeIcon } from "./icons.js";
 import { locationIcon } from "./icons";
+import { logoutIcon } from "./icons";
 
 function IconButton({ type }) {
   const AddSvg = () => <SvgXml xml={addIcon} style={styles.icon} />;
@@ -16,6 +17,7 @@ function IconButton({ type }) {
   const LocationSvg = () => (
     <SvgXml xml={locationIcon} style={styles.location} />
   );
+  const LogoutSvg = () => <SvgXml xml={logoutIcon} style={styles.logout} />;
 
   let svg;
   switch (type) {
@@ -33,6 +35,9 @@ function IconButton({ type }) {
       break;
     case "location":
       svg = <LocationSvg />;
+      break;
+    case "logout":
+      svg = <LogoutSvg />;
       break;
   }
   return (
