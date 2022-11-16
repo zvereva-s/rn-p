@@ -8,6 +8,7 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import LoginScreen from "./screens/Auth/LoginScreen";
 import RegistrationScreen from "./screens/Auth/RegistrationScreen";
+import Home from "./screens/Home";
 
 const AuthStack = createStackNavigator();
 
@@ -34,9 +35,9 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <View style={styles.container} onLayout={onLayoutRootView}>
-        <AuthStack.Navigator>
+    // <NavigationContainer>
+    <View style={styles.container} onLayout={onLayoutRootView}>
+      {/* <AuthStack.Navigator>
           <AuthStack.Screen
             options={{
               headerShown: false,
@@ -51,9 +52,10 @@ export default function App() {
             name="Login"
             component={LoginScreen}
           />
-        </AuthStack.Navigator>
-      </View>
-    </NavigationContainer>
+        </AuthStack.Navigator> */}
+      <Home />
+    </View>
+    // </NavigationContainer>
   );
 }
 

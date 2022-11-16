@@ -17,9 +17,6 @@ import {
 import IconButton from "../../shared/components/IconButton/IconButton";
 
 export default function RegistrationScreen({ navigation }) {
-  //
-  console.log({ navigation });
-  //
   const [keyboardStatus, setKeyboardStatus] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [loginIsActiveStyle, setLoginIsActiveStyle] = useState({});
@@ -195,7 +192,7 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
   },
-  iconWrapper: { position: "absolute", right: -10, bottom: 15 },
+  iconWrapper: { position: "absolute", right: -15, bottom: 15 },
   form: {
     position: "relative",
     alignItems: "center",
