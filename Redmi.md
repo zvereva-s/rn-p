@@ -32,7 +32,7 @@ State Login Screen
 3. 4. Создать экран CommentsScreen <br>
 5. Создать экран ProfileScreen <br>
 6. Создать экран MapScreen <br>
-7. Создать экран Home <br>
+7. ✅ Создать экран Home <br>
 
 8. ✅ Подключить в проект навигацию.
 9. ✅ Добавить в проект переходы между экранами LoginScreen, RegistrationScreen при помощи компонента createStackNavigator
