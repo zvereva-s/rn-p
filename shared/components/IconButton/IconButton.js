@@ -8,6 +8,9 @@ import { commentIcon } from "./icons.js";
 import { likeIcon } from "./icons.js";
 import { locationIcon } from "./icons";
 import { logoutIcon } from "./icons";
+import { gridIcon } from "./icons";
+import { userIcon } from "./icons";
+import { plusIcon } from "./icons";
 
 function IconButton({ type }) {
   const AddSvg = () => <SvgXml xml={addIcon} style={styles.icon} />;
@@ -18,6 +21,9 @@ function IconButton({ type }) {
     <SvgXml xml={locationIcon} style={styles.location} />
   );
   const LogoutSvg = () => <SvgXml xml={logoutIcon} style={styles.logout} />;
+  const GridSvg = () => <SvgXml xml={gridIcon} style={styles.grid} />;
+  const PlusSvg = () => <SvgXml xml={plusIcon} style={styles.plus} />;
+  const UserSvg = () => <SvgXml xml={userIcon} style={styles.user} />;
 
   let svg;
   switch (type) {
@@ -38,6 +44,15 @@ function IconButton({ type }) {
       break;
     case "logout":
       svg = <LogoutSvg />;
+      break;
+    case "grid":
+      svg = <GridSvg />;
+      break;
+    case "user":
+      svg = <UserSvg />;
+      break;
+    case "plus":
+      svg = <PlusSvg />;
       break;
   }
   return (
@@ -64,5 +79,8 @@ const styles = StyleSheet.create({
   location: {
     justifyContent: "end",
   },
+  grid: {},
+  user: {},
+  plus: {},
 });
 export default IconButton;

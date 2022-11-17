@@ -4,14 +4,16 @@ import { StyleSheet, View, Text } from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 
 import LoginScreen from "./screens/Auth/LoginScreen";
 import RegistrationScreen from "./screens/Auth/RegistrationScreen";
-import Home from "./screens/Home/Home";
-import PostsScreen from "./screens/ Posts/PostsScreen";
+import ProfileScreen from "./screens/ProfileScreen";
+import PostsScreen from "./screens/MainScreen/PostsScreen";
 
 const AuthStack = createStackNavigator();
+const MainTab = createBottomTabNavigator();
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -36,9 +38,28 @@ export default function App() {
   }
 
   return (
-    // <NavigationContainer>
-    <View style={styles.container} onLayout={onLayoutRootView}>
-      {/* <AuthStack.Navigator>
+    <NavigationContainer>
+      <View style={styles.container} onLayout={onLayoutRootView}>
+        <MainTab.Navigator>
+          <MainTab.Screen name="Публикации" component={PostsScreen} />
+          <MainTab.Screen name="Профиль" component={ProfileScreen} />
+        </MainTab.Navigator>
+      </View>
+    </NavigationContainer>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+  },
+});
+
+//! auth
+
+{
+  /* <AuthStack.Navigator>
           <AuthStack.Screen
             options={{
               headerShown: false,
@@ -53,17 +74,5 @@ export default function App() {
             name="Login"
             component={LoginScreen}
           />
-        </AuthStack.Navigator> */}
-      {/* <Home /> */}
-      <PostsScreen />
-    </View>
-    // </NavigationContainer>
-  );
+        </AuthStack.Navigator> */
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-  },
-});
