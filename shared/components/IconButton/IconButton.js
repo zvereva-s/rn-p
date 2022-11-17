@@ -5,18 +5,24 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 import { addIcon } from "./icons.js";
 import { deleteIcon } from "./icons.js";
 import { commentIcon } from "./icons.js";
+import { commentGreyIcon } from "./icons";
 import { likeIcon } from "./icons.js";
 import { locationIcon } from "./icons";
 import { logoutIcon } from "./icons";
 import { gridIcon } from "./icons";
 import { userIcon } from "./icons";
 import { plusIcon } from "./icons";
+import { plusFocusedIcon } from "./icons";
+import { orangeBackIcon } from "./icons";
 
 function IconButton({ type }) {
   const AddSvg = () => <SvgXml xml={addIcon} style={styles.icon} />;
   const DeleteSvg = () => <SvgXml xml={deleteIcon} style={styles.delete} />;
   const LikeSvg = () => <SvgXml xml={likeIcon} style={styles.like} />;
   const CommentSvg = () => <SvgXml xml={commentIcon} style={styles.comment} />;
+  const CommentGreySvg = () => (
+    <SvgXml xml={commentGreyIcon} style={styles.comment} />
+  );
   const LocationSvg = () => (
     <SvgXml xml={locationIcon} style={styles.location} />
   );
@@ -24,6 +30,14 @@ function IconButton({ type }) {
   const GridSvg = () => <SvgXml xml={gridIcon} style={styles.grid} />;
   const PlusSvg = () => <SvgXml xml={plusIcon} style={styles.plus} />;
   const UserSvg = () => <SvgXml xml={userIcon} style={styles.user} />;
+  const PlusFocusedSvg = () => <SvgXml xml={plusFocusedIcon} />;
+  const UserFocusedSvg = () => (
+    <>
+      <SvgXml xml={orangeBackIcon} style={styles.userFocus}>
+        <SvgXml xml={userIcon} style={styles.user} />
+      </SvgXml>
+    </>
+  );
 
   let svg;
   switch (type) {
@@ -39,6 +53,9 @@ function IconButton({ type }) {
     case "comment":
       svg = <CommentSvg />;
       break;
+    case "comment-grey":
+      svg = <CommentGreySvg />;
+      break;
     case "location":
       svg = <LocationSvg />;
       break;
@@ -53,6 +70,12 @@ function IconButton({ type }) {
       break;
     case "plus":
       svg = <PlusSvg />;
+      break;
+    case "plus-focus":
+      svg = <PlusFocusedSvg />;
+      break;
+    case "user-focus":
+      svg = <UserFocusedSvg />;
       break;
   }
   return (
@@ -80,7 +103,14 @@ const styles = StyleSheet.create({
     justifyContent: "end",
   },
   grid: {},
-  user: {},
+  user: {
+    position: "relative",
+    zIndex: 1,
+  },
+  userFocus: {
+    position: "relative",
+    zIndex: -10,
+  },
   plus: {},
 });
 export default IconButton;
