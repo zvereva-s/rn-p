@@ -42,7 +42,7 @@ State Login Screen
 
 11. ✅ Подключить нижнюю навигацию используя createBottomTabNavigator
 12. ✅ В нижней навигации создать 3 перехода.
-    <img src='https://github.com/zvereva-s/rn-p/raw/main/images/Tabs.png' width='188' heigth='auto'/>
+    <img src='https://github.com/zvereva-s/rn-p/raw/main/images/Tabs.jpg' width='188' heigth='auto'/>
 
 13. Клик по иконке №1 ведет на экран PostsScreen
 14. Клик по иконке №2 ведет на экран CreatePostsScreen
