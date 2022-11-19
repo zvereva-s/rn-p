@@ -1,116 +1,81 @@
 import React from "react";
 import { SvgXml } from "react-native-svg";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
 
 import { addIcon } from "./icons.js";
 import { deleteIcon } from "./icons.js";
 import { commentIcon } from "./icons.js";
-import { commentGreyIcon } from "./icons";
+import { arrowLeftIcon } from "./icons.js";
+import { trashIcon } from "./icons.js";
+
 import { likeIcon } from "./icons.js";
 import { locationIcon } from "./icons";
 import { logoutIcon } from "./icons";
 import { gridIcon } from "./icons";
 import { userIcon } from "./icons";
 import { plusIcon } from "./icons";
-import { plusFocusedIcon } from "./icons";
-import { orangeBackIcon } from "./icons";
 
-function IconButton({ type }) {
-  const AddSvg = () => <SvgXml xml={addIcon} style={styles.icon} />;
-  const DeleteSvg = () => <SvgXml xml={deleteIcon} style={styles.delete} />;
-  const LikeSvg = () => <SvgXml xml={likeIcon} style={styles.like} />;
-  const CommentSvg = () => <SvgXml xml={commentIcon} style={styles.comment} />;
-  const CommentGreySvg = () => (
-    <SvgXml xml={commentGreyIcon} style={styles.comment} />
-  );
-  const LocationSvg = () => (
-    <SvgXml xml={locationIcon} style={styles.location} />
-  );
-  const LogoutSvg = () => <SvgXml xml={logoutIcon} style={styles.logout} />;
-  const GridSvg = () => <SvgXml xml={gridIcon} style={styles.grid} />;
-  const PlusSvg = () => <SvgXml xml={plusIcon} style={styles.plus} />;
-  const UserSvg = () => <SvgXml xml={userIcon} style={styles.user} />;
-  const PlusFocusedSvg = () => <SvgXml xml={plusFocusedIcon} />;
-  const UserFocusedSvg = () => (
-    <>
-      <SvgXml xml={orangeBackIcon} style={styles.userFocus}>
-        <SvgXml xml={userIcon} style={styles.user} />
-      </SvgXml>
-    </>
-  );
-
-  let svg;
+export default function IconButton({ type, focused, size }) {
+  let xml;
   switch (type) {
     case "add":
-      svg = <AddSvg />;
+      xml = addIcon(focused);
       break;
     case "delete":
-      svg = <DeleteSvg />;
-      break;
-    case "like":
-      svg = <LikeSvg />;
+      xml = deleteIcon(focused);
       break;
     case "comment":
-      svg = <CommentSvg />;
+      xml = commentIcon(focused);
       break;
-    case "comment-grey":
-      svg = <CommentGreySvg />;
+    case "arrowLeft":
+      xml = arrowLeftIcon(focused);
+      break;
+    case "like":
+      xml = likeIcon(focused);
       break;
     case "location":
-      svg = <LocationSvg />;
+      xml = locationIcon(focused);
       break;
     case "logout":
-      svg = <LogoutSvg />;
+      xml = logoutIcon(focused);
       break;
     case "grid":
-      svg = <GridSvg />;
-      break;
-    case "user":
-      svg = <UserSvg />;
+      xml = gridIcon(focused);
       break;
     case "plus":
-      svg = <PlusSvg />;
+      xml = plusIcon(focused);
       break;
-    case "plus-focus":
-      svg = <PlusFocusedSvg />;
+    case "trash":
+      xml = trashIcon(focused);
       break;
-    case "user-focus":
-      svg = <UserFocusedSvg />;
+    case "user":
+      xml = userIcon(focused);
       break;
   }
+
+  const PlusIcon = ({ focused, size }) => {
+    return (
+      <View style={styles.btnPlus}>
+        <SvgXml xml={xml} width={size} height={size} />
+      </View>
+    );
+  };
+
   return (
-    <TouchableOpacity activeOpacity={0.8} style={styles.btn}>
-      {svg}
+    <TouchableOpacity activeOpacity={0.8}>
+      <SvgXml xml={xml} width={size} height={size} />
+      {(type === "plus" || type === "user") && focused && (
+        <PlusIcon focused={focused} />
+      )}
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  btn: {},
-  icon: {
-    width: 25,
-    height: 25,
+  btnPlus: {
+    backgroundColor: "#FF6C00",
+    borderRadius: 20,
+    width: 70,
+    maxHeight: 40,
   },
-  delete: {
-    width: 25,
-    height: 25,
-
-    transform: [{ rotate: "-45deg" }],
-  },
-  like: {},
-  comment: {},
-  location: {
-    justifyContent: "end",
-  },
-  grid: {},
-  user: {
-    position: "relative",
-    zIndex: 1,
-  },
-  userFocus: {
-    position: "relative",
-    zIndex: -10,
-  },
-  plus: {},
 });
-export default IconButton;

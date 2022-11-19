@@ -40,7 +40,13 @@ export default function useRoute(isAuth) {
         component={PostsScreen}
         options={{
           tabBarShowLabel: false,
-          tabBarIcon: ({ focused, size, color }) => <IconButton type="grid" />,
+          tabBarIcon: ({ focused }) => (
+            <IconButton
+              type="grid"
+              focused={focused}
+              size={focused ? 10 : 40}
+            />
+          ),
         }}
       />
       <MainTab.Screen
@@ -48,8 +54,12 @@ export default function useRoute(isAuth) {
         component={ProfileScreen}
         options={{
           tabBarShowLabel: false,
-          tabBarIcon: ({ focused, size, color }) => (
-            <IconButton type="user-focus" />
+          tabBarIcon: ({ focused }) => (
+            <IconButton
+              type="user"
+              focused={focused}
+              size={focused ? 10 : 40}
+            />
           ),
         }}
       />
@@ -58,7 +68,13 @@ export default function useRoute(isAuth) {
         component={CreatePostScreen}
         options={{
           tabBarShowLabel: false,
-          tabBarIcon: ({ focused, size, color }) => <IconButton type="plus" />,
+          tabBarIcon: ({ focused }) => (
+            <IconButton
+              type="plus"
+              focused={focused}
+              size={focused ? 10 : 40}
+            />
+          ),
         }}
       />
     </MainTab.Navigator>

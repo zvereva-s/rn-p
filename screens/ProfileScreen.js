@@ -17,11 +17,11 @@ export default function ProfileScreen() {
               style={styles.img}
             />
             <View style={styles.iconWrapper}>
-              <IconButton type="delete" />
+              <IconButton type="delete" focused={false} size="35" />
             </View>
           </View>
           <View style={{ ...styles.iconWrapper, right: 10, top: 21 }}>
-            <IconButton type="logout" />
+            <IconButton type="logout" focused={false} size="25" />
           </View>
           <Text style={styles.headerText}>Jerry Hell</Text>
           <View style={styles.postWrapper}>
@@ -33,17 +33,17 @@ export default function ProfileScreen() {
             <View style={styles.feedbacksWrapper}>
               <View style={styles.likesCommentsBox}>
                 <View style={styles.likesBox}>
-                  <IconButton type="like" />
+                  <IconButton type="like" focused={true} size="25" />
                   <Text style={styles.feedbackTitle}>8</Text>
                 </View>
                 <View style={styles.commentsBox}>
-                  <IconButton type="comment" />
+                  <IconButton type="comment" focused={true} size="25" />
                   <Text style={styles.feedbackTitle}>150</Text>
                 </View>
               </View>
               <View style={styles.feedbackLocationBox}>
                 <View style={styles.feedbackLocation}>
-                  <IconButton type="location" />
+                  <IconButton type="location" focused={false} size="25" />
                   <Text
                     style={{
                       ...styles.feedbackTitle,

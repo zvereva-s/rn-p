@@ -26,14 +26,14 @@ export default function PostsScreen() {
             <Text style={styles.titlePost}>The Carpathians</Text>
             <View style={styles.feedbackWrapper}>
               <View style={styles.commentsBox}>
-                <IconButton type="comment-grey" />
+                <IconButton type="comment" focused={false} size="25" />
                 <Text style={{ ...styles.feedbackTitle, color: "#BDBDBD" }}>
                   150
                 </Text>
               </View>
 
               <View style={styles.feedbackLocation}>
-                <IconButton type="location" />
+                <IconButton type="location" focused={false} size="25" />
                 <Text
                   style={{
                     ...styles.feedbackTitle,

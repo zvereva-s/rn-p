@@ -75,7 +75,7 @@ export default function RegistrationScreen({ navigation }) {
               <View style={styles.imageWrapper}>
                 <Image />
                 <View style={styles.iconWrapper}>
-                  <IconButton type="add" />
+                  <IconButton type="add" focused={false} size="35" />
                 </View>
               </View>
 
