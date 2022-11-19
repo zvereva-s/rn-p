@@ -38,7 +38,8 @@ State Login Screen
 9. ✅ Добавить в проект переходы между экранами LoginScreen, RegistrationScreen при помощи компонента createStackNavigator
    C RegistrationScreen можно перейти на LoginScreen кликнув по тексту Войти / C LoginScreen можно перейти на RegistrationScreen по тексту Зарегистрироваться
 
-10. После сабмита в LoginScreen, RegistrationScreen перебрасывает на Home где сразу показывается экран PostsScreen
+10. ✅ После сабмита в LoginScreen, RegistrationScreen перебрасывает на Home где сразу показывается экран PostsScreen
+    <img src='https://github.com/zvereva-s/rn-p/raw/main/images/navToPosts.jpg' width='188' heigth='auto'/>
 
 11. ✅ Подключить нижнюю навигацию используя createBottomTabNavigator
 12. ✅ В нижней навигации создать 3 перехода.

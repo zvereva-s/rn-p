@@ -54,6 +54,7 @@ export default function RegistrationScreen({ navigation }) {
       email: "",
       password: "",
     });
+    navigation.navigate("Posts");
   }
 
   return (
