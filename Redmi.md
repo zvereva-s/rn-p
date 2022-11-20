@@ -27,23 +27,24 @@ State Login Screen
 
 <h3>HomeWork 4</h3>
 <h4>Задание</h4>
-1. Создать экран PostsScreen <br>
-2. Создать экран CreatePostsScreen <br>
-3. 4. Создать экран CommentsScreen <br>
-5. Создать экран ProfileScreen <br>
-6. Создать экран MapScreen <br>
-7. ✅ Создать экран Home <br>
-
-8. ✅ Подключить в проект навигацию.
-9. ✅ Добавить в проект переходы между экранами LoginScreen, RegistrationScreen при помощи компонента createStackNavigator
+1.  ✅ Создать экран PostsScreen <br>
+2.  ✅ Создать экран CreatePostsScreen <br>
+3.  ✅  Создать экран CommentsScreen <br>
+4.  ✅ Создать экран ProfileScreen <br>
+5.  ✅ Создать экран MapScreen <br>
+6.  ✅ Создать экран Home <br>
+<img src='https://github.com/zvereva-s/rn-p/raw/main/images/screens.jpg' width='1200' heigth='auto'/>
+7. ✅ Подключить в проект навигацию.
+8. ✅ Добавить в проект переходы между экранами LoginScreen, RegistrationScreen при помощи компонента createStackNavigator
    C RegistrationScreen можно перейти на LoginScreen кликнув по тексту Войти / C LoginScreen можно перейти на RegistrationScreen по тексту Зарегистрироваться
 
-10. ✅ После сабмита в LoginScreen, RegistrationScreen перебрасывает на Home где сразу показывается экран PostsScreen
-    <img src='https://github.com/zvereva-s/rn-p/raw/main/images/navToPosts.jpg' width='1200' heigth='auto'/>
+9. ✅ После сабмита в LoginScreen, RegistrationScreen перебрасывает на Home где сразу показывается экран PostsScreen
+   <img src='https://github.com/zvereva-s/rn-p/raw/main/images/navToPosts.jpg' width='1200' heigth='auto'/>
 
-11. ✅ Подключить нижнюю навигацию используя createBottomTabNavigator
-12. ✅ В нижней навигации создать 3 перехода.
+10. ✅ Подключить нижнюю навигацию используя createBottomTabNavigator
+11. ✅ В нижней навигации создать 3 перехода.
     <img src='https://github.com/zvereva-s/rn-p/raw/main/images/Tabs.jpg' width='188' heigth='auto'/>
 
-13. Клик по иконке №1 ведет на экран PostsScreen
-14. Клик по иконке №2 ведет на экран CreatePostsScreen
+12. ✅ Клик по иконке №1 ведет на экран PostsScreen
+13. ✅ Клик по иконке №2 ведет на экран CreatePostsScreen
+14. ✅ Клик по иконке №3 ведет на экран ProfileScreen

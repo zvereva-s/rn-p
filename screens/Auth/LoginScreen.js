@@ -49,6 +49,7 @@ export default function LoginScreen({ navigation }) {
       email: "",
       password: "",
     });
+    navigation.navigate("Публикации");
   }
 
   return (

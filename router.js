@@ -3,9 +3,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import LoginScreen from "./screens/Auth/LoginScreen";
 import RegistrationScreen from "./screens/Auth/RegistrationScreen";
-import ProfileScreen from "./screens/ProfileScreen";
+import ProfileScreen from "./screens/MainScreen/ProfileScreen";
 import PostsScreen from "./screens/MainScreen/PostsScreen";
-import CreatePostScreen from "./screens/CreatePostScreen";
+import CreatePostScreen from "./screens/MainScreen/CreatePostScreen";
 
 import IconButton from "./shared/components/IconButton/IconButton";
 
@@ -44,7 +44,7 @@ export default function useRoute(isAuth) {
             <IconButton
               type="grid"
               focused={focused}
-              size={focused ? 10 : 40}
+              size={focused ? 40 : 40}
             />
           ),
         }}

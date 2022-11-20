@@ -7,7 +7,7 @@ import { deleteIcon } from "./icons.js";
 import { commentIcon } from "./icons.js";
 import { arrowLeftIcon } from "./icons.js";
 import { trashIcon } from "./icons.js";
-
+import { photoIcon } from "./icons.js";
 import { likeIcon } from "./icons.js";
 import { locationIcon } from "./icons";
 import { logoutIcon } from "./icons";
@@ -15,7 +15,7 @@ import { gridIcon } from "./icons";
 import { userIcon } from "./icons";
 import { plusIcon } from "./icons";
 
-export default function IconButton({ type, focused, size }) {
+export default function IconButton({ type, focused, size, inversia }) {
   let xml;
   switch (type) {
     case "add":
@@ -51,9 +51,12 @@ export default function IconButton({ type, focused, size }) {
     case "user":
       xml = userIcon(focused);
       break;
+    case "photo":
+      xml = photoIcon(focused, inversia);
+      break;
   }
 
-  const PlusIcon = ({ focused, size }) => {
+  const PlusIcon = ({ focused, size, inversia }) => {
     return (
       <View style={styles.btnPlus}>
         <SvgXml xml={xml} width={size} height={size} />
@@ -62,12 +65,12 @@ export default function IconButton({ type, focused, size }) {
   };
 
   return (
-    <TouchableOpacity activeOpacity={0.8}>
+    <>
       <SvgXml xml={xml} width={size} height={size} />
       {(type === "plus" || type === "user") && focused && (
         <PlusIcon focused={focused} />
       )}
-    </TouchableOpacity>
+    </>
   );
 }
 

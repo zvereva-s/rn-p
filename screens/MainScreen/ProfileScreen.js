@@ -1,19 +1,19 @@
 import React from "react";
 import { StyleSheet, View, Image, ImageBackground, Text } from "react-native";
 
-import IconButton from "../shared/components/IconButton/IconButton";
+import IconButton from "../../shared/components/IconButton/IconButton";
 
 export default function ProfileScreen() {
   return (
     <View style={styles.container}>
       <ImageBackground
         style={styles.backGround}
-        source={require("../assets/photo_bg.png")}
+        source={require("../../assets/photo_bg.png")}
       >
         <View style={styles.wrapper}>
           <View style={styles.imageWrapper}>
             <Image
-              source={require("../assets/userAvatar.png")}
+              source={require("../../assets/userAvatar.png")}
               style={styles.img}
             />
             <View style={styles.iconWrapper}>
@@ -26,7 +26,7 @@ export default function ProfileScreen() {
           <Text style={styles.headerText}>Jerry Hell</Text>
           <View style={styles.postWrapper}>
             <Image
-              source={require("../assets/postImg.jpeg")}
+              source={require("../../assets/postImg.jpeg")}
               style={styles.imgPost}
             />
             <Text style={styles.titlePost}>Title</Text>
