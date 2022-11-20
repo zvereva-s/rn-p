@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
+  Image,
   View,
   Text,
   TextInput,
@@ -19,6 +20,9 @@ export default function CreatePostScreen() {
   const [keyboardStatus, setKeyboardStatus] = useState(false);
   const [submitFocus, setSubmitFocus] = useState(false);
   const [locationFocused, setLocationFocused] = useState(false);
+
+  const [camera, setCamera] = useState("");
+  const [uri, setUri] = useState("");
 
   const [state, setState] = useState({
     name: "",
@@ -42,6 +46,10 @@ export default function CreatePostScreen() {
     };
   }, []);
 
+  async function takePhoto() {
+    const { uri } = await camera.takePictureAsync();
+    setUri(uri);
+  }
   function hideKeyboard() {
     setKeyboardStatus(false);
 
@@ -56,15 +64,24 @@ export default function CreatePostScreen() {
   return (
     <TouchableWithoutFeedback onPress={hideKeyboard}>
       <View style={styles.container}>
-        <View style={styles.imgContainer}>
-          <TouchableOpacity activeOpacity={0.8} style={styles.btnPhotoWrapper}>
+        {uri && (
+          <View style={styles.imgContainer}>
+            <Image source={{ uri }} style={{ height: 240 }} />
+          </View>
+        )}
+        <Camera style={styles.cameraContainer} ref={setCamera}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.btnPhotoWrapper}
+            onPress={takePhoto}
+          >
             <View style={styles.icnWrapper}>
               <IconButton type="photo" focused={false} size="24" />
             </View>
           </TouchableOpacity>
-        </View>
+        </Camera>
         <Text style={styles.text}>
-          {"Загрузите фото" || "Редактировать фото"}
+          {uri ? "Редактировать фото" : "Загрузите фото"}
         </Text>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -146,16 +163,31 @@ const styles = StyleSheet.create({
     paddingTop: 32,
   },
   imgContainer: {
+    position: "absolute",
+    top: 32,
+    left: 0,
+    zIndex: 2,
     justifyContent: "center",
     alignItems: "center",
 
     height: 240,
-    backgroundColor: "#F6F6F6",
+    width: "93%",
     borderWidth: 1,
     borderColor: "#E8E8E8",
     borderRadius: 8,
     marginHorizontal: 16,
   },
+  cameraContainer: {
+    position: "relative",
+    zIndex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+
+    height: 240,
+    borderRadius: 8,
+    marginHorizontal: 16,
+  },
+
   btnPhotoWrapper: {
     position: "relative",
 
@@ -219,9 +251,3 @@ const styles = StyleSheet.create({
     color: "#BDBDBD",
   },
 });
-
-/*
-
-backgroundColor: press ? "#FF6C00" : "#F6F6F6",
-
-*/
