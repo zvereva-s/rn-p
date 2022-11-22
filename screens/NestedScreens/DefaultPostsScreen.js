@@ -3,7 +3,8 @@ import { StyleSheet, View, Image, Text } from "react-native";
 
 import IconButton from "../../shared/components/IconButton/IconButton";
 
-export default function DefaultPostsScreen() {
+export default function DefaultPostsScreen({ route }) {
+  console.log("route.params", route.params);
   return (
     <>
       <View style={styles.container}>

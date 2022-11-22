@@ -16,11 +16,13 @@ import { Camera } from "expo-camera";
 
 import IconButton from "../../shared/components/IconButton/IconButton";
 
-export default function CreatePostScreen() {
+export default function CreatePostScreen({ navigation }) {
+  const { navigate } = navigation;
   const [keyboardStatus, setKeyboardStatus] = useState(false);
   const [submitFocus, setSubmitFocus] = useState(false);
   const [locationFocused, setLocationFocused] = useState(false);
 
+  const [cameraReady, setCameraReady] = useState(false);
   const [camera, setCamera] = useState("");
   const [uri, setUri] = useState("");
 
@@ -50,15 +52,21 @@ export default function CreatePostScreen() {
     const { uri } = await camera.takePictureAsync();
     setUri(uri);
   }
+
   function hideKeyboard() {
     setKeyboardStatus(false);
-
     Keyboard.dismiss();
-    console.log({ state });
+
     setState({
       name: "",
       location: "",
     });
+  }
+  function sendPost() {
+    if (name.length && location.length > 2) {
+      setSubmitFocus(true);
+    }
+    navigate("Публикации", { ...state, uri });
   }
 
   return (
@@ -69,7 +77,11 @@ export default function CreatePostScreen() {
             <Image source={{ uri }} style={{ height: 240 }} />
           </View>
         )}
-        <Camera style={styles.cameraContainer} ref={setCamera}>
+        <Camera
+          style={styles.cameraContainer}
+          ref={setCamera}
+          onCameraReady={setCameraReady}
+        >
           <TouchableOpacity
             activeOpacity={0.8}
             style={styles.btnPhotoWrapper}
@@ -111,12 +123,15 @@ export default function CreatePostScreen() {
               placeholderTextColor="#BDBDBD"
               value={location}
               onChangeText={(value) => {
-                setSubmitFocus(false);
                 setState((prev) => ({ ...prev, location: value }));
               }}
               onFocus={() => {
                 setKeyboardStatus(true);
                 setLocationFocused(true);
+
+                name.length && location.length
+                  ? setSubmitFocus(true)
+                  : setSubmitFocus(false);
               }}
               onBlur={() => {
                 setLocationFocused(false);
@@ -132,11 +147,7 @@ export default function CreatePostScreen() {
                 ...styles.btn,
                 backgroundColor: submitFocus ? "#FF6C00" : "#F6F6F6",
               }}
-              onPress={() => {
-                if (name.length && location.length > 2) {
-                  setSubmitFocus(true);
-                }
-              }}
+              onPress={sendPost}
             >
               <Text
                 style={{
