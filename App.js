@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, LogBox } from "react-native";
 
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
@@ -29,6 +29,7 @@ export default function App() {
   if (!fontsLoaded) {
     return null;
   }
+  LogBox.ignoreLogs(["EventEmitter.removeListener"]);
 
   return (
     <NavigationContainer>

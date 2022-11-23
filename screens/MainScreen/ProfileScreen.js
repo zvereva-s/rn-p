@@ -1,9 +1,16 @@
 import React from "react";
-import { StyleSheet, View, Image, ImageBackground, Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Image,
+  ImageBackground,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 
 import IconButton from "../../shared/components/IconButton/IconButton";
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -36,10 +43,14 @@ export default function ProfileScreen() {
                   <IconButton type="like" focused={true} size="25" />
                   <Text style={styles.feedbackTitle}>8</Text>
                 </View>
-                <View style={styles.commentsBox}>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  style={styles.commentsBox}
+                  onPress={() => navigation.navigate("Комментарии")}
+                >
                   <IconButton type="comment" focused={true} size="25" />
                   <Text style={styles.feedbackTitle}>150</Text>
-                </View>
+                </TouchableOpacity>
               </View>
               <View style={styles.feedbackLocationBox}>
                 <View style={styles.feedbackLocation}>

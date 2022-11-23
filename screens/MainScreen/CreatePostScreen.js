@@ -13,6 +13,7 @@ import {
   Dimensions,
 } from "react-native";
 import { Camera } from "expo-camera";
+import * as Location from "expo-location";
 
 import IconButton from "../../shared/components/IconButton/IconButton";
 
@@ -20,17 +21,20 @@ export default function CreatePostScreen({ navigation }) {
   const { navigate } = navigation;
   const [keyboardStatus, setKeyboardStatus] = useState(false);
   const [submitFocus, setSubmitFocus] = useState(false);
-  const [locationFocused, setLocationFocused] = useState(false);
+  const [locationIconFocused, setLocationIconFocused] = useState(false);
 
-  const [cameraReady, setCameraReady] = useState(false);
   const [camera, setCamera] = useState("");
   const [uri, setUri] = useState("");
+  const [locationCoords, setLocationCoords] = useState({
+    latitude: "",
+    longitude: "",
+  });
 
   const [state, setState] = useState({
     name: "",
-    location: "",
+    locationName: "",
   });
-  const { name, location } = state;
+  const { name, locationName } = state;
 
   const [dimensions, setdimensions] = useState(
     Dimensions.get("window").width - 16 * 2
@@ -51,6 +55,17 @@ export default function CreatePostScreen({ navigation }) {
   async function takePhoto() {
     const { uri } = await camera.takePictureAsync();
     setUri(uri);
+
+    const data = await Location.getCurrentPositionAsync();
+
+    //! delete
+    console.log({ data });
+    //! delete
+
+    setLocationCoords({
+      latitude: data.coords.latitude,
+      longitude: data.coords.longitude,
+    });
   }
 
   function hideKeyboard() {
@@ -59,14 +74,14 @@ export default function CreatePostScreen({ navigation }) {
 
     setState({
       name: "",
-      location: "",
+      locationName: "",
     });
   }
   function sendPost() {
-    if (name.length && location.length > 2) {
+    if (name.length && locationName?.length > 2) {
       setSubmitFocus(true);
     }
-    navigate("Публикации", { ...state, uri });
+    navigate("Home", { ...state, uri, ...locationCoords });
   }
 
   return (
@@ -77,11 +92,7 @@ export default function CreatePostScreen({ navigation }) {
             <Image source={{ uri }} style={{ height: 240 }} />
           </View>
         )}
-        <Camera
-          style={styles.cameraContainer}
-          ref={setCamera}
-          onCameraReady={setCameraReady}
-        >
+        <Camera style={styles.cameraContainer} ref={setCamera}>
           <TouchableOpacity
             activeOpacity={0.8}
             style={styles.btnPhotoWrapper}
@@ -121,24 +132,28 @@ export default function CreatePostScreen({ navigation }) {
               }}
               placeholder="Местность..."
               placeholderTextColor="#BDBDBD"
-              value={location}
+              value={locationName}
               onChangeText={(value) => {
-                setState((prev) => ({ ...prev, location: value }));
+                setState((prev) => ({ ...prev, locationName: value }));
               }}
               onFocus={() => {
                 setKeyboardStatus(true);
-                setLocationFocused(true);
+                setLocationIconFocused(true);
 
-                name.length && location.length
+                name.length && locationName?.length
                   ? setSubmitFocus(true)
                   : setSubmitFocus(false);
               }}
               onBlur={() => {
-                setLocationFocused(false);
+                setLocationIconFocused(false);
               }}
             />
             <View style={{ position: "absolute", top: 80 }}>
-              <IconButton type="location" focused={locationFocused} size="24" />
+              <IconButton
+                type="location"
+                focused={locationIconFocused}
+                size="24"
+              />
             </View>
 
             <TouchableOpacity

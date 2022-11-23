@@ -48,7 +48,7 @@ export default function RegistrationScreen({ navigation }) {
   function hideKeyboard() {
     setKeyboardStatus(false);
     Keyboard.dismiss();
-    console.log({ state });
+
     setState({
       login: "",
       email: "",
