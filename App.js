@@ -1,11 +1,11 @@
 import React, { useEffect, useCallback } from "react";
 import { StyleSheet, View, Text, LogBox } from "react-native";
-
+import { Provider } from "react-redux";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-
 import { NavigationContainer } from "@react-navigation/native";
 
+import { store } from "./redux/store";
 import useRoute from "./router";
 
 export default function App() {
@@ -32,11 +32,13 @@ export default function App() {
   LogBox.ignoreLogs(["EventEmitter.removeListener"]);
 
   return (
-    <NavigationContainer>
-      <View style={styles.container} onLayout={onLayoutRootView}>
-        {routing}
-      </View>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <View style={styles.container} onLayout={onLayoutRootView}>
+          {routing}
+        </View>
+      </NavigationContainer>
+    </Provider>
   );
 }
 

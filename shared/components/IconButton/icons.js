@@ -89,7 +89,7 @@ export const userIcon = (focused) => {
   const color = !focused ? "#212121" : "#FFF";
   return `<svg width="40" height="40" viewBox="0 0 40 40" fill="none">
 <path d="M28 29V27C28 24.7909 26.2091 23 24 23H16C13.7909 23 12 24.7909 12 27V29" stroke="${color}" stroke-opacity="0.8" stroke-linecap="round" stroke-linejoin="round"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M20 19C22.2091 19 24 17.2091 24 15C24 12.7909 22.2091 11 20 11C17.7909 11 16 12.7909 16 15C16 17.2091 17.7909 19 20 19Z" stroke="${color}" stroke-opacity="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M20 19C22.2091 19 24 17.2091 24 15C24 12.7909 22.2091 11 20 11C17.7909 11 16 12.7909 16 15C16 17.2091 17.7909 19 20 19Z" stroke="${color}" stroke-opacity="0.8" stroke-linecap="round" stroke-linejoin="round" />
 </svg>
 `;
 };
@@ -101,12 +101,12 @@ export const photoIcon = (focused, inversia) => {
 
   return `<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
 <g clip-path="url(#clip0_36_0)">
-<path d="M11.9998 15.2C13.7671 15.2 15.1998 13.7673 15.1998 12C15.1998 10.2327 13.7671 8.79999 11.9998 8.79999C10.2325 8.79999 8.7998 10.2327 8.7998 12C8.7998 13.7673 10.2325 15.2 11.9998 15.2Z" fill="${color}"/>
-<path d="M9 2L7.17 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4H16.83L15 2H9ZM12 17C9.24 17 7 14.76 7 12C7 9.24 9.24 7 12 7C14.76 7 17 9.24 17 12C17 14.76 14.76 17 12 17Z" fill="${color}"/>
+<path d="M11.9998 15.2C13.7671 15.2 15.1998 13.7673 15.1998 12C15.1998 10.2327 13.7671 8.79999 11.9998 8.79999C10.2325 8.79999 8.7998 10.2327 8.7998 12C8.7998 13.7673 10.2325 15.2 11.9998 15.2Z" fill="${color}" />
+<path d="M9 2L7.17 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4H16.83L15 2H9ZM12 17C9.24 17 7 14.76 7 12C7 9.24 9.24 7 12 7C14.76 7 17 9.24 17 12C17 14.76 14.76 17 12 17Z" fill="${color}" />
 </g>
 <defs>
 <clipPath id="clip0_36_0">
-<rect width="24" height="24" fill="white"/>
+<rect width="24" height="24" fill="white" />
 </clipPath>
 </defs>
 </svg>

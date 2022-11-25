@@ -33,7 +33,7 @@ export default function Home({ route, navigation }) {
           <TouchableOpacity
             style={styles.commentsBox}
             activeOpacity={0.8}
-            onPress={() => navigate("Комментарии")}
+            onPress={() => navigate("Комментарии", { uri })}
           >
             <IconButton type="comment" focused={false} size="25" />
             <Text style={{ ...styles.feedbackTitle, color: "#BDBDBD" }}>
