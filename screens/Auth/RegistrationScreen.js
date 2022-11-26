@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import {
   StyleSheet,
   View,
@@ -14,6 +15,7 @@ import {
   Dimensions,
 } from "react-native";
 
+import { authSignUp } from "../../redux/auth/auth-operations";
 import IconButton from "../../shared/components/IconButton/IconButton";
 
 export default function RegistrationScreen({ navigation }) {
@@ -29,6 +31,7 @@ export default function RegistrationScreen({ navigation }) {
     password: "",
   });
   const { login, email, password } = state;
+  const dispatch = useDispatch();
 
   const [dimensions, setdimensions] = useState(
     Dimensions.get("window").width - 16 * 2
@@ -48,12 +51,17 @@ export default function RegistrationScreen({ navigation }) {
   function hideKeyboard() {
     setKeyboardStatus(false);
     Keyboard.dismiss();
+  }
 
+  function handleSubmit() {
+    hideKeyboard();
+    dispatch(authSignUp(state));
     setState({
       login: "",
       email: "",
       password: "",
     });
+
     navigation.navigate("Публикации");
   }
 
@@ -149,7 +157,7 @@ export default function RegistrationScreen({ navigation }) {
                 <TouchableOpacity
                   activeOpacity={0.8}
                   style={styles.btn}
-                  onPress={hideKeyboard}
+                  onPress={handleSubmit}
                 >
                   <Text style={styles.btnTitle}>Зарегистрироваться</Text>
                 </TouchableOpacity>

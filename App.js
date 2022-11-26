@@ -12,7 +12,7 @@ export default function App() {
   const [fontsLoaded] = useFonts({
     Roboto: require("./assets/fonts/Roboto/Roboto-Regular.ttf"),
   });
-  const routing = useRoute(true);
+  const routing = useRoute(false);
   useEffect(() => {
     async function prepare() {
       await SplashScreen.preventAutoHideAsync();

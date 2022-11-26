@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import {
   StyleSheet,
   View,
@@ -12,6 +13,7 @@ import {
   Platform,
   Dimensions,
 } from "react-native";
+import { authSignIn } from "../../redux/auth/auth-operations";
 
 export default function LoginScreen({ navigation }) {
   const [keyboardStatus, setKeyboardStatus] = useState(false);
@@ -25,6 +27,7 @@ export default function LoginScreen({ navigation }) {
     password: "",
   });
   const { email, password } = state;
+  const dispatch = useDispatch();
 
   const [dimensions, setdimensions] = useState(
     Dimensions.get("window").width - 16 * 2
@@ -44,11 +47,12 @@ export default function LoginScreen({ navigation }) {
   function hideKeyboard() {
     setKeyboardStatus(false);
     Keyboard.dismiss();
-    console.log({ state });
+
     setState({
       email: "",
       password: "",
     });
+    // dispatch(authSignIn(state));
     navigation.navigate("Публикации");
   }
 
