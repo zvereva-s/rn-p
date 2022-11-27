@@ -47,12 +47,15 @@ export default function LoginScreen({ navigation }) {
   function hideKeyboard() {
     setKeyboardStatus(false);
     Keyboard.dismiss();
-
+  }
+  function handleSubmit() {
+    hideKeyboard();
     setState({
       email: "",
       password: "",
     });
-    // dispatch(authSignIn(state));
+
+    dispatch(authSignIn(state));
     navigation.navigate("Публикации");
   }
 
@@ -120,7 +123,7 @@ export default function LoginScreen({ navigation }) {
                 <TouchableOpacity
                   activeOpacity={0.8}
                   style={styles.btn}
-                  onPress={hideKeyboard}
+                  onPress={handleSubmit}
                 >
                   <Text style={styles.btnTitle}>Войти</Text>
                 </TouchableOpacity>

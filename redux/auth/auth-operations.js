@@ -1,20 +1,7 @@
-import db from "../../firebase/config";
+import { createOperation } from "../../shared/utils/utils";
+import { signUp, signIn } from "../../shared/api/api-auth";
 
-export const authSignUp =
-  ({ email, password, login }) =>
-  async (dispatch, getState) => {
-    try {
-      const user = await db
-        .auth()
-        .createUserWithEmailAndPassword(email, password);
-    } catch (error) {
-      console.log("error", error);
-      console.log("error.message", error.message);
-    }
-  };
-
-export const authSignIn =
-  ({ email, password }) =>
-  async (dispatch, getState) => {};
+export const authSignUp = createOperation("auth/signup", signUp);
+export const authSignIn = createOperation("auth/signin", signIn);
 
 export const authSignOut = async (dispatch, getState) => {};
