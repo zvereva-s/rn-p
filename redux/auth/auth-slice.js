@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { authSignUp, authSignIn } from "./auth-operations";
+import { authSignUp, authSignIn, authSignOut } from "./auth-operations";
 
 const initialState = {
   user: {
@@ -22,24 +22,27 @@ const fulfilled = (store, { payload }) => {
   store.user.email = payload.email;
   store.user.login = payload.displayName;
 };
+const pending = (store, _) => ({ ...store, loading: true });
+const rejected = (store, { payload }) => ({
+  ...store,
+  error: payload,
+});
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   extraReducers: {
-    [authSignUp.pending]: (store, _) => ({ ...store, loading: true }),
-    [authSignUp.rejected]: (store, { payload }) => ({
-      ...store,
-      error: payload,
-    }),
+    [authSignUp.pending]: pending,
+    [authSignUp.rejected]: rejected,
     [authSignUp.fulfilled]: fulfilled,
 
-    [authSignIn.pending]: (store, _) => ({ ...store, loading: true }),
-    [authSignIn.rejected]: (store, { payload }) => ({
-      ...store,
-      error: payload,
-    }),
+    [authSignIn.pending]: pending,
+    [authSignIn.rejected]: rejected,
     [authSignIn.fulfilled]: fulfilled,
+
+    [authSignOut.pending]: pending,
+    [authSignOut.rejected]: rejected,
+    [authSignOut.fulfilled]: (store, { payload }) => ({ ...initialState }),
   },
 });
 export default authSlice.reducer;
