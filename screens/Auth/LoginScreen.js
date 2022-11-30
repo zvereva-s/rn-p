@@ -56,7 +56,6 @@ export default function LoginScreen({ navigation }) {
     });
 
     dispatch(authSignIn(state));
-    navigation.navigate("Публикации");
   }
 
   return (

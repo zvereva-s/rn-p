@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { nanoid } from "nanoid";
 import {
   StyleSheet,
   Image,
@@ -14,6 +15,7 @@ import {
 } from "react-native";
 import { Camera } from "expo-camera";
 import * as Location from "expo-location";
+import db from "../../firebase/config";
 
 import IconButton from "../../shared/components/IconButton/IconButton";
 
@@ -55,17 +57,26 @@ export default function CreatePostScreen({ navigation }) {
   async function takePhoto() {
     const { uri } = await camera.takePictureAsync();
     setUri(uri);
+    uploadPhotoToServer();
 
     const data = await Location.getCurrentPositionAsync();
-
-    //! delete
-    console.log({ data });
-    //! delete
 
     setLocationCoords({
       latitude: data.coords.latitude,
       longitude: data.coords.longitude,
     });
+  }
+
+  async function uploadPhotoToServer() {
+    const response = await fetch(uri);
+    const file = await response.blob();
+
+    const uniquePostId = nanoid().toString();
+
+    const data = await db.storage().ref(`postImage/${uniquePostId}`).put(file);
+    //!
+    console.log("data uploadPhoto", data);
+    //!
   }
 
   function hideKeyboard() {
