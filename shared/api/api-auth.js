@@ -13,6 +13,21 @@ export async function signIn({ email, password }) {
   return user;
 }
 
+export async function checkAuth() {
+  let currentUser;
+  await db.auth().onAuthStateChanged((user) => {
+    currentUser = user
+      ? {
+          email: user.email,
+          login: user.displayName,
+          userId: user.uid,
+        }
+      : null;
+  });
+
+  return currentUser;
+}
+
 export async function signOut() {
   await db.auth().signOut();
 }

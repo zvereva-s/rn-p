@@ -1,4 +1,5 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import {
   StyleSheet,
   View,
@@ -8,9 +9,12 @@ import {
   TouchableOpacity,
 } from "react-native";
 
+import { authSignOut } from "../../redux/auth/auth-operations";
+
 import IconButton from "../../shared/components/IconButton/IconButton";
 
 export default function ProfileScreen({ navigation }) {
+  const dispatch = useDispatch();
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -27,9 +31,15 @@ export default function ProfileScreen({ navigation }) {
               <IconButton type="delete" focused={false} size="35" />
             </View>
           </View>
-          <View style={{ ...styles.iconWrapper, right: 10, top: 21 }}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => {
+              dispatch(authSignOut());
+            }}
+            style={{ ...styles.iconWrapper, right: 10, top: 21 }}
+          >
             <IconButton type="logout" focused={false} size="25" />
-          </View>
+          </TouchableOpacity>
           <Text style={styles.headerText}>Jerry Hell</Text>
           <View style={styles.postWrapper}>
             <Image
