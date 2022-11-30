@@ -32,6 +32,10 @@ export default function CreatePostScreen({ navigation }) {
     longitude: "",
   });
 
+  //!
+  console.log("uri", uri);
+  //!
+
   const [state, setState] = useState({
     name: "",
     locationName: "",
@@ -57,10 +61,7 @@ export default function CreatePostScreen({ navigation }) {
   async function takePhoto() {
     const { uri } = await camera.takePictureAsync();
     setUri(uri);
-    uploadPhotoToServer();
-
     const data = await Location.getCurrentPositionAsync();
-
     setLocationCoords({
       latitude: data.coords.latitude,
       longitude: data.coords.longitude,
@@ -68,15 +69,15 @@ export default function CreatePostScreen({ navigation }) {
   }
 
   async function uploadPhotoToServer() {
+    //!
+    console.log("uploadPhotoToServer", { uri });
+    //!
     const response = await fetch(uri);
     const file = await response.blob();
 
     const uniquePostId = nanoid().toString();
 
     const data = await db.storage().ref(`postImage/${uniquePostId}`).put(file);
-    //!
-    console.log("data uploadPhoto", data);
-    //!
   }
 
   function hideKeyboard() {
@@ -92,6 +93,7 @@ export default function CreatePostScreen({ navigation }) {
     if (name.length && locationName?.length > 2) {
       setSubmitFocus(true);
     }
+    uploadPhotoToServer();
     navigate("Home", { ...state, uri, ...locationCoords });
   }
 
