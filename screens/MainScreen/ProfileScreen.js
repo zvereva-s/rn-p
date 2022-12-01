@@ -10,11 +10,14 @@ import {
 } from "react-native";
 
 import { authSignOut } from "../../redux/auth/auth-operations";
+import useAuth from "../../shared/hooks/useAuth";
 
 import IconButton from "../../shared/components/IconButton/IconButton";
 
 export default function ProfileScreen({ navigation }) {
   const dispatch = useDispatch();
+  const { user } = useAuth();
+
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -40,7 +43,7 @@ export default function ProfileScreen({ navigation }) {
           >
             <IconButton type="logout" focused={false} size="25" />
           </TouchableOpacity>
-          <Text style={styles.headerText}>Jerry Hell</Text>
+          <Text style={styles.headerText}>{user.login}</Text>
           <View style={styles.postWrapper}>
             <Image
               source={require("../../assets/postImg.jpeg")}

@@ -10,8 +10,10 @@ import {
 import { nanoid } from "nanoid";
 
 import IconButton from "../../shared/components/IconButton/IconButton";
+import useAuth from "../../shared/hooks/useAuth";
 
 export default function Home({ route, navigation }) {
+  const { user } = useAuth();
   const { navigate } = navigation;
   const [posts, setPosts] = useState([]);
 
@@ -73,8 +75,8 @@ export default function Home({ route, navigation }) {
             source={require("../../assets/userAvatar.png")}
           />
           <View style={styles.textWrapper}>
-            <Text style={styles.name}>Jerry Hell</Text>
-            <Text style={styles.email}>jerry@mail.com</Text>
+            <Text style={styles.name}>{user.login}</Text>
+            <Text style={styles.email}>{user.email}</Text>
           </View>
         </View>
         <View style={styles.postsWrapper}>

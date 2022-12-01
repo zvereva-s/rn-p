@@ -32,10 +32,6 @@ export default function CreatePostScreen({ navigation }) {
     longitude: "",
   });
 
-  //!
-  console.log("uri", uri);
-  //!
-
   const [state, setState] = useState({
     name: "",
     locationName: "",
@@ -69,15 +65,15 @@ export default function CreatePostScreen({ navigation }) {
   }
 
   async function uploadPhotoToServer() {
-    //!
-    console.log("uploadPhotoToServer", { uri });
-    //!
-    const response = await fetch(uri);
-    const file = await response.blob();
-
-    const uniquePostId = nanoid().toString();
-
-    const data = await db.storage().ref(`postImage/${uniquePostId}`).put(file);
+    try {
+      const response = await fetch(uri);
+      const file = await response.blob();
+      const uniquePostId = nanoid().toString();
+      await db.storage().ref(`postImages`).child(uniquePostId).put(file);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   }
 
   function hideKeyboard() {
@@ -93,7 +89,7 @@ export default function CreatePostScreen({ navigation }) {
     if (name.length && locationName?.length > 2) {
       setSubmitFocus(true);
     }
-    // uploadPhotoToServer();
+    uploadPhotoToServer();
     navigate("Home", { ...state, uri, ...locationCoords });
   }
 
