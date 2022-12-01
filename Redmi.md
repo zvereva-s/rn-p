@@ -33,7 +33,7 @@ State Login Screen
 4.  ✅ Создать экран ProfileScreen <br>
 5.  ✅ Создать экран MapScreen <br>
 6.  ✅ Создать экран Home <br>
-<img src='https://github.com/zvereva-s/rn-p/raw/main/images/screens.jpg' width='1200' heigth='auto'/>
+<img src='https://github.com/zvereva-s/rn-p/raw/main/images/screens.jpg' width='250' heigth='auto'/>
 7. ✅ Подключить в проект навигацию.
 8. ✅ Добавить в проект переходы между экранами LoginScreen, RegistrationScreen при помощи компонента createStackNavigator
    C RegistrationScreen можно перейти на LoginScreen кликнув по тексту Войти / C LoginScreen можно перейти на RegistrationScreen по тексту Зарегистрироваться
