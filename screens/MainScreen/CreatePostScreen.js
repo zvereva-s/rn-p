@@ -93,7 +93,7 @@ export default function CreatePostScreen({ navigation }) {
     if (name.length && locationName?.length > 2) {
       setSubmitFocus(true);
     }
-    uploadPhotoToServer();
+    // uploadPhotoToServer();
     navigate("Home", { ...state, uri, ...locationCoords });
   }
 
