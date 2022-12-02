@@ -13,14 +13,20 @@ import {
   Platform,
   Dimensions,
 } from "react-native";
+
 import { Camera } from "expo-camera";
 import * as Location from "expo-location";
+
+import useAuth from "../../shared/hooks/useAuth";
 import db from "../../firebase/config";
 
 import IconButton from "../../shared/components/IconButton/IconButton";
 
 export default function CreatePostScreen({ navigation }) {
   const { navigate } = navigation;
+  const { user } = useAuth();
+  const { userID, login } = user;
+
   const [keyboardStatus, setKeyboardStatus] = useState(false);
   const [submitFocus, setSubmitFocus] = useState(false);
   const [locationIconFocused, setLocationIconFocused] = useState(false);
@@ -70,8 +76,32 @@ export default function CreatePostScreen({ navigation }) {
       const file = await response.blob();
       const uniquePostId = nanoid().toString();
       await db.storage().ref(`postImages`).child(uniquePostId).put(file);
+
+      const urlPhotoStorage = await db
+        .storage()
+        .ref(`postImages`)
+        .child(uniquePostId)
+        .getDownloadURL();
+
+      return urlPhotoStorage;
     } catch (error) {
       console.log(error);
+      throw error;
+    }
+  }
+  async function uploadPostToServer() {
+    try {
+      const photo = await uploadPhotoToServer();
+      const createPost = await db.firestore().collection("posts").add({
+        photo,
+        name: state.name,
+        login,
+        userID,
+        locationName: state.locationName,
+        locationCoords,
+      });
+    } catch (error) {
+      console.log("error", error);
       throw error;
     }
   }
@@ -79,7 +109,7 @@ export default function CreatePostScreen({ navigation }) {
   function hideKeyboard() {
     setKeyboardStatus(false);
     Keyboard.dismiss();
-
+    i;
     setState({
       name: "",
       locationName: "",
@@ -89,7 +119,7 @@ export default function CreatePostScreen({ navigation }) {
     if (name.length && locationName?.length > 2) {
       setSubmitFocus(true);
     }
-    uploadPhotoToServer();
+    uploadPostToServer();
     navigate("Home", { ...state, uri, ...locationCoords });
   }
 
