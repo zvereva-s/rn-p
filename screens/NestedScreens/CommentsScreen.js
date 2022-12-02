@@ -1,5 +1,14 @@
 import React from "react";
-import { StyleSheet, View, Image, Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Image,
+  Text,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
+
+import IconButton from "../../shared/components/IconButton/IconButton";
 
 export default function CommentsScreen({ route }) {
   const uri = route?.params?.uri;
@@ -40,6 +49,18 @@ export default function CommentsScreen({ route }) {
             09 июня, 2020 | 08:40
           </Text>
         </View>
+      </View>
+
+      <View style={styles.input}>
+        <TextInput
+          placeholder="Комментировать..."
+          placeholderTextColor="#BDBDBD"
+        />
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={styles.btnComment}
+          // onPress={handleComment}
+        ></TouchableOpacity>
       </View>
     </View>
   );
@@ -110,5 +131,19 @@ const styles = StyleSheet.create({
     lineHeight: 12,
     textAlign: "right",
     color: "#BDBDBD",
+  },
+  input: {
+    width: "100%",
+    paddingTop: 16,
+    paddingBottom: 16,
+    paddingLeft: 16,
+    borderWidth: 1,
+    borderColor: "#E8E8E8",
+    borderRadius: 100,
+    backgroundColor: "#F6F6F6",
+  },
+  btnComment: {
+    borderRadius: "50%",
+    backgroundColor: "#FF6C00",
   },
 });
