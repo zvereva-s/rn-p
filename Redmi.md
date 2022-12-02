@@ -84,6 +84,8 @@ State Login Screen
 <p>
  - валидацию форм
 
+- posts scroll
+
 - лоадинги
 
 - вывод ошибок пользователю
@@ -95,3 +97,9 @@ State Login Screen
 - отображение заголовка
 - отображения табсов внизу (сделать фото - корзина/ комменты - написать коммент)
 </p>
+
+=======
+console.log()
+
+console.log(`%c[ Next]`, "color: #4CAF50;");
+console.log(`%c[ Error]`, "color: #F44336;");
