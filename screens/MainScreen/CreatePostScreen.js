@@ -92,7 +92,7 @@ export default function CreatePostScreen({ navigation }) {
   async function uploadPostToServer() {
     try {
       const photo = await uploadPhotoToServer();
-      const createPost = await db.firestore().collection("posts").add({
+      await db.firestore().collection("posts").add({
         photo,
         name: state.name,
         login,
@@ -101,7 +101,11 @@ export default function CreatePostScreen({ navigation }) {
         locationCoords,
       });
     } catch (error) {
-      console.log("error", error);
+      console.log(
+        `%c[Error - uploadPostToServer(): ${error.message}]`,
+        "color: #F44336;"
+      );
+
       throw error;
     }
   }
@@ -120,7 +124,7 @@ export default function CreatePostScreen({ navigation }) {
       setSubmitFocus(true);
     }
     uploadPostToServer();
-    navigate("Home", { ...state, uri, ...locationCoords });
+    navigate("Home");
   }
 
   return (
