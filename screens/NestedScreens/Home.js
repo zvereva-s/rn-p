@@ -12,30 +12,49 @@ import { nanoid } from "nanoid";
 import IconButton from "../../shared/components/IconButton/IconButton";
 import useAuth from "../../shared/hooks/useAuth";
 
+import db from "../../firebase/config";
+
 export default function Home({ route, navigation }) {
   const { user } = useAuth();
   const { navigate } = navigation;
   const [posts, setPosts] = useState([]);
 
-  useEffect(() => {
-    if (route.params) {
-      setPosts((prevState) => [
-        { id: nanoid(), ...route.params },
-        ...prevState,
-      ]);
-    }
-  }, [route.params]);
+  //! console.log
+  console.log({ posts });
 
-  const Item = ({ uri, name, locationName, latitude, longitude }) => {
+  useEffect(() => {
+    async function fetchPosts() {
+      try {
+        await db
+          .firestore()
+          .collection("posts")
+          .onSnapshot(({ docs }) => {
+            setPosts(docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+          });
+      } catch (error) {
+        console.log(
+          `%c[Error - fetchPosts(): ${error.message}]`,
+          "color: #F44336;"
+        );
+
+        throw error;
+      }
+    }
+    fetchPosts();
+  }, []);
+
+  const Item = ({ photo, name, locationName, locationCoords }) => {
+    const { latitude, longitude } = locationCoords;
+
     return (
       <View style={styles.postWrapper}>
-        <Image source={{ uri }} style={styles.imgPost} />
+        <Image source={{ uri: photo }} style={styles.imgPost} />
         <Text style={styles.titlePost}>{name}</Text>
         <View style={styles.feedbackWrapper}>
           <TouchableOpacity
             style={styles.commentsBox}
             activeOpacity={0.8}
-            onPress={() => navigate("Комментарии", { uri })}
+            onPress={() => navigate("Комментарии", { photo })}
           >
             <IconButton type="comment" focused={false} size="25" />
             <Text style={{ ...styles.feedbackTitle, color: "#BDBDBD" }}>
@@ -47,7 +66,11 @@ export default function Home({ route, navigation }) {
             style={styles.feedbackLocation}
             activeOpacity={0.8}
             onPress={() =>
-              navigate("Карта", { latitude, longitude, locationName })
+              navigate("Карта", {
+                latitude,
+                longitude,
+                locationName,
+              })
             }
           >
             <IconButton type="location" focused={false} size="25" />
@@ -85,11 +108,10 @@ export default function Home({ route, navigation }) {
             keyExtractor={({ id }) => id}
             renderItem={({ item }) => (
               <Item
-                uri={item.uri}
+                photo={item.photo}
                 name={item.name}
                 locationName={item.locationName}
-                latitude={item.latitude}
-                longitude={item.longitude}
+                locationCoords={item.locationCoords}
               />
             )}
           />
