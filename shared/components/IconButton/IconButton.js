@@ -14,6 +14,7 @@ import { logoutIcon } from "./icons";
 import { gridIcon } from "./icons";
 import { userIcon } from "./icons";
 import { plusIcon } from "./icons";
+import { arrowUpIcon } from "./icons";
 
 export default function IconButton({ type, focused, size, inversia }) {
   let xml;
@@ -53,6 +54,9 @@ export default function IconButton({ type, focused, size, inversia }) {
       break;
     case "photo":
       xml = photoIcon(focused, inversia);
+      break;
+    case "arrowUp":
+      xml = arrowUpIcon(focused);
       break;
   }
 
