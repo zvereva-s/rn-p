@@ -53,6 +53,7 @@ export default function CommentsScreen({ route }) {
 
       <View style={styles.input}>
         <TextInput
+          style={styles.txtInput}
           placeholder="Комментировать..."
           placeholderTextColor="#BDBDBD"
         />
@@ -60,7 +61,9 @@ export default function CommentsScreen({ route }) {
           activeOpacity={0.8}
           style={styles.btnComment}
           // onPress={handleComment}
-        ></TouchableOpacity>
+        >
+          <IconButton type="arrowUp" focused={false} size="10" />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -133,17 +136,31 @@ const styles = StyleSheet.create({
     color: "#BDBDBD",
   },
   input: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
     width: "100%",
-    paddingTop: 16,
-    paddingBottom: 16,
-    paddingLeft: 16,
+    height: 50,
+
     borderWidth: 1,
     borderColor: "#E8E8E8",
     borderRadius: 100,
     backgroundColor: "#F6F6F6",
   },
+  txtInput: {
+    // paddingTop: 16,
+    // paddingBottom: 16,
+    paddingLeft: 16,
+  },
+
   btnComment: {
-    borderRadius: "50%",
+    alignItems: "center",
+    justifyContent: "center",
+    width: 34,
+    height: 34,
+    borderRadius: 50,
     backgroundColor: "#FF6C00",
+    padding: 0,
+    margin: 0,
   },
 });
