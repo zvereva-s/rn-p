@@ -43,9 +43,11 @@ export default function Home({ route, navigation }) {
     fetchPosts();
   }, []);
 
-  const Item = ({ photo, name, locationName, locationCoords }) => {
+  const Item = ({ photo, name, locationName, locationCoords, id }) => {
     const { latitude, longitude } = locationCoords;
-
+    //! console
+    console.log({ id });
+    //!
     return (
       <View style={styles.postWrapper}>
         <Image source={{ uri: photo }} style={styles.imgPost} />
@@ -54,7 +56,7 @@ export default function Home({ route, navigation }) {
           <TouchableOpacity
             style={styles.commentsBox}
             activeOpacity={0.8}
-            onPress={() => navigate("Комментарии", { photo })}
+            onPress={() => navigate("Комментарии", { photo, id })}
           >
             <IconButton type="comment" focused={false} size="25" />
             <Text style={{ ...styles.feedbackTitle, color: "#BDBDBD" }}>
@@ -108,6 +110,7 @@ export default function Home({ route, navigation }) {
             keyExtractor={({ id }) => id}
             renderItem={({ item }) => (
               <Item
+                id={item.id}
                 photo={item.photo}
                 name={item.name}
                 locationName={item.locationName}
