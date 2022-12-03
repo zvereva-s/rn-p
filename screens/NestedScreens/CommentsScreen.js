@@ -138,21 +138,25 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
     width: "100%",
-    height: 50,
+    maxHeight: 50,
 
     borderWidth: 1,
     borderColor: "#E8E8E8",
     borderRadius: 100,
     backgroundColor: "#F6F6F6",
+
+    paddingLeft: 16,
+    paddingRight: 8,
+    marginBottom: 16,
   },
   txtInput: {
-    // paddingTop: 16,
-    // paddingBottom: 16,
-    paddingLeft: 16,
+    fontFamily: "Roboto",
+    fontSize: 13,
+    fontStyle: "normal",
   },
-
   btnComment: {
     alignItems: "center",
     justifyContent: "center",
