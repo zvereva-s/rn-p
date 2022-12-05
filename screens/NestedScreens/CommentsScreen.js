@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -6,61 +6,136 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  FlatList,
 } from "react-native";
+
+import db from "../../firebase/config";
+
+import useAuth from "../../shared/hooks/useAuth";
+import { handleDate } from "../../shared/utils/utils";
 
 import IconButton from "../../shared/components/IconButton/IconButton";
 
 export default function CommentsScreen({ route }) {
-  const uri = route?.params?.uri;
+  const auth = useAuth();
+
+  const { login } = auth.user;
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
+  const [date, setDate] = useState(handleDate());
+
+  const { photo: uri, id } = route?.params;
+
+  useEffect(() => {
+    async function fetchPostComments() {
+      try {
+        await db
+          .firestore()
+          .collection("posts")
+          .doc(id)
+          .collection("comments")
+          .onSnapshot(({ docs }) => {
+            setComments(docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+          });
+      } catch (error) {
+        console.log(
+          `%c[Error - fetchPostComments(): ${error.message}]`,
+          "color: #F44336;"
+        );
+
+        throw error;
+      }
+    }
+    fetchPostComments();
+  }, []);
+
+  async function handleComment() {
+    try {
+      await db
+        .firestore()
+        .collection("posts")
+        .doc(id)
+        .collection("comments")
+        .add({ comment, login, date });
+      setComment("");
+    } catch (error) {
+      console.log(
+        `%c[Error - handleComment(): ${error.message}]`,
+        "color: #F44336;"
+      );
+
+      throw error;
+    }
+  }
+
+  const MsgComment = ({ photo, login, comment, date, modulo }) => (
+    <View
+      style={
+        !modulo
+          ? styles.msgWrapper
+          : { ...styles.msgWrapper, flexDirection: "row-reverse" }
+      }
+    >
+      <Image
+        style={styles.avatar}
+        source={require("../../assets/userAvatar.png")}
+      />
+      <View
+        style={
+          !modulo
+            ? styles.txtWrapper
+            : {
+                ...styles.txtWrapper,
+                borderTopRightRadius: 0,
+                borderTopLeftRadius: 6,
+              }
+        }
+      >
+        <Text style={styles.text}>{comment}</Text>
+        <Text
+          style={
+            !modulo
+              ? styles.timeDelivery
+              : { ...styles.timeDelivery, textAlign: "left" }
+          }
+        >
+          {date}
+        </Text>
+      </View>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
-      <Image style={styles.imgPost} source={uri} />
-      <View style={styles.msgWrapper}>
-        <Image
-          style={styles.avatar}
-          source={require("../../assets/userAvatar.png")}
-        />
-        <View style={styles.txtWrapper}>
-          <Text style={styles.text}>
-            Really love your most recent photo. I've been trying to capture the
-            same thing for a few months and would love some tips!
-          </Text>
-          <Text style={styles.timeDelivery}>09 июня, 2020 | 08:40</Text>
-        </View>
-      </View>
-
-      <View style={{ ...styles.msgWrapper, flexDirection: "row-reverse" }}>
-        <Image
-          style={styles.avatar}
-          source={require("../../assets/userAvatar.png")}
-        />
-        <View
-          style={{
-            ...styles.txtWrapper,
-            borderTopRightRadius: 0,
-            borderTopLeftRadius: 6,
-          }}
-        >
-          <Text style={styles.text}>
-            Really love your most recent photo. I've been trying to capture the
-            same thing for a few months and would love some tips!
-          </Text>
-          <Text style={{ ...styles.timeDelivery, textAlign: "left" }}>
-            09 июня, 2020 | 08:40
-          </Text>
-        </View>
-      </View>
-
+      <Image style={styles.imgPost} source={{ uri }} />
+      <FlatList
+        data={comments}
+        keyExtractor={({ id }) => id}
+        renderItem={({ item, index }) => {
+          const modulo = index % 2 ? true : false;
+          return (
+            <MsgComment
+              // photo={comment.photo}
+              login={item.login}
+              comment={item.comment}
+              date={item.date}
+              modulo={modulo}
+            />
+          );
+        }}
+      />
       <View style={styles.input}>
         <TextInput
           style={styles.txtInput}
           placeholder="Комментировать..."
           placeholderTextColor="#BDBDBD"
+          value={comment}
+          onChangeText={setComment}
         />
         <TouchableOpacity
           activeOpacity={0.8}
           style={styles.btnComment}
-          // onPress={handleComment}
+          onPress={handleComment}
         >
           <IconButton type="arrowUp" focused={false} size="10" />
         </TouchableOpacity>
