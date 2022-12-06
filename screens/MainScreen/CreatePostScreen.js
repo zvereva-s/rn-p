@@ -99,6 +99,7 @@ export default function CreatePostScreen({ navigation }) {
         userID,
         locationName: state.locationName,
         locationCoords,
+        date: Date.now(),
       });
     } catch (error) {
       console.log(
