@@ -18,9 +18,7 @@ export default function Home({ route, navigation }) {
   const { user } = useAuth();
   const { navigate } = navigation;
   const [posts, setPosts] = useState([]);
-
-  //! console.log
-  console.log({ posts });
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     async function fetchPosts() {
@@ -29,7 +27,39 @@ export default function Home({ route, navigation }) {
           .firestore()
           .collection("posts")
           .onSnapshot(({ docs }) => {
-            setPosts(docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+            docs.map((doc) => {
+              db.firestore()
+                .collection("posts")
+                .doc(doc.id)
+                .collection("comments")
+                .onSnapshot(({ docs }) => {
+                  setComments((prevState) => {
+                    return [
+                      ...prevState,
+                      { id: doc.id, commentNumber: docs.length },
+                    ];
+                  });
+                });
+              comments.map((item) => {
+                setPosts((prevState) => {
+                  return [
+                    ...prevState,
+                    {
+                      id: doc.id,
+                      ...doc.data(),
+                      comment: item.id === doc.id && item.commentNumber,
+                    },
+                  ]
+                    .filter(
+                      (post, indx, arr) =>
+                        post.comment !== false && arr.indexOf(post) === indx
+                    )
+                    .sort(
+                      (firstPost, lastPost) => lastPost.date - firstPost.date
+                    );
+                });
+              });
+            });
           });
       } catch (error) {
         console.log(
@@ -41,13 +71,22 @@ export default function Home({ route, navigation }) {
       }
     }
     fetchPosts();
+    return () => {
+      setComments([]);
+      setPosts([]);
+    };
   }, []);
 
-  const Item = ({ photo, name, locationName, locationCoords, id }) => {
+  const Item = ({
+    photo,
+    name,
+    locationName,
+    locationCoords,
+    id,
+    commentQuanity,
+  }) => {
     const { latitude, longitude } = locationCoords;
-    //! console
-    console.log({ id });
-    //!
+
     return (
       <View style={styles.postWrapper}>
         <Image source={{ uri: photo }} style={styles.imgPost} />
@@ -60,7 +99,7 @@ export default function Home({ route, navigation }) {
           >
             <IconButton type="comment" focused={false} size="25" />
             <Text style={{ ...styles.feedbackTitle, color: "#BDBDBD" }}>
-              150
+              {commentQuanity}
             </Text>
           </TouchableOpacity>
 
@@ -115,6 +154,7 @@ export default function Home({ route, navigation }) {
                 name={item.name}
                 locationName={item.locationName}
                 locationCoords={item.locationCoords}
+                commentQuanity={item.comment}
               />
             )}
           />
@@ -228,3 +268,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
+
+// .sort((firstPost, lastPost) => lastPost.date - firstPost.date)
