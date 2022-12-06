@@ -35,7 +35,12 @@ export default function CommentsScreen({ route }) {
           .doc(id)
           .collection("comments")
           .onSnapshot(({ docs }) => {
-            setComments(docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+            setComments(
+              docs.map((doc) => ({
+                ...doc.data(),
+                id: doc.id,
+              }))
+            );
           });
       } catch (error) {
         console.log(
@@ -56,7 +61,7 @@ export default function CommentsScreen({ route }) {
         .collection("posts")
         .doc(id)
         .collection("comments")
-        .add({ comment, login, date });
+        .add({ comment, login, date, dateID: Date().now() });
       setComment("");
     } catch (error) {
       console.log(
