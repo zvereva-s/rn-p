@@ -61,7 +61,7 @@ export default function CommentsScreen({ route }) {
         .collection("posts")
         .doc(id)
         .collection("comments")
-        .add({ comment, login, date, dateID: Date().now() });
+        .add({ comment, login, date, dateID: Date.now() });
       setComment("");
     } catch (error) {
       console.log(
