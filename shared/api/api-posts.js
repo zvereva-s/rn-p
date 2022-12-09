@@ -49,3 +49,52 @@ export async function fetchPosts(comments, setComments, setPosts) {
     throw error;
   }
 }
+
+export async function getUserPosts(comments, setComments, setPosts, userId) {
+  try {
+    await db
+      .firestore()
+      .collection("posts")
+      .where("userID", "==", userId)
+      .onSnapshot(({ docs }) => {
+        docs.map((doc) => {
+          db.firestore()
+            .collection("posts")
+            .doc(doc.id)
+            .collection("comments")
+            .onSnapshot(({ docs }) => {
+              setComments((prevState) => {
+                return [
+                  ...prevState,
+                  {
+                    id: doc.id,
+                    commentNumber: docs.length,
+                  },
+                ];
+              });
+              //! console
+              console.log({ comments });
+              //!
+            });
+        });
+        comments.map((comment) =>
+          setPosts(
+            docs
+              .map((doc) => ({
+                ...doc.data(),
+                commentNumber:
+                  doc.id === comment.id ? comment.commentNumber : 0,
+              }))
+              .sort((firstPost, lastPost) => lastPost.date - firstPost.date)
+          )
+        );
+      });
+  } catch (error) {
+    console.log(
+      `%c[Error - fetchPosts(): ${error.message}]`,
+      "color: #F44336;"
+    );
+
+    throw error;
+  }
+}
