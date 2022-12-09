@@ -36,10 +36,14 @@ export default function CommentsScreen({ route }) {
           .collection("comments")
           .onSnapshot(({ docs }) => {
             setComments(
-              docs.map((doc) => ({
-                ...doc.data(),
-                id: doc.id,
-              }))
+              docs
+                .map((doc) => ({
+                  ...doc.data(),
+                  id: doc.id,
+                }))
+                .sort(
+                  (firstPost, lastPost) => lastPost.dateID - firstPost.dateID
+                )
             );
           });
       } catch (error) {
