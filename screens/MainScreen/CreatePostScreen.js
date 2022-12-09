@@ -20,6 +20,11 @@ import * as Location from "expo-location";
 import useAuth from "../../shared/hooks/useAuth";
 import db from "../../firebase/config";
 
+import {
+  takePhoto,
+  uploadPhotoToServer,
+} from "../../shared/api/api-uploadImages";
+
 import IconButton from "../../shared/components/IconButton/IconButton";
 
 export default function CreatePostScreen({ navigation }) {
@@ -37,61 +42,34 @@ export default function CreatePostScreen({ navigation }) {
     latitude: "",
     longitude: "",
   });
-
   const [state, setState] = useState({
     name: "",
     locationName: "",
   });
   const { name, locationName } = state;
-
-  const [dimensions, setdimensions] = useState(
+  const [dimensions, setDimensions] = useState(
     Dimensions.get("window").width - 16 * 2
   );
 
   useEffect(() => {
     const onChange = () => {
       const width = Dimensions.get("window").width - 16 * 2;
-      setdimensions(width);
+      setDimensions(width);
     };
 
     Dimensions.addEventListener("change", onChange);
     return () => {
       Dimensions.removeEventListener("change", onChange);
+      setState({
+        name: "",
+        locationName: "",
+      });
     };
   }, []);
 
-  async function takePhoto() {
-    const { uri } = await camera.takePictureAsync();
-    setUri(uri);
-    const data = await Location.getCurrentPositionAsync();
-    setLocationCoords({
-      latitude: data.coords.latitude,
-      longitude: data.coords.longitude,
-    });
-  }
-
-  async function uploadPhotoToServer() {
-    try {
-      const response = await fetch(uri);
-      const file = await response.blob();
-      const uniquePostId = nanoid().toString();
-      await db.storage().ref(`postImages`).child(uniquePostId).put(file);
-
-      const urlPhotoStorage = await db
-        .storage()
-        .ref(`postImages`)
-        .child(uniquePostId)
-        .getDownloadURL();
-
-      return urlPhotoStorage;
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  }
   async function uploadPostToServer() {
     try {
-      const photo = await uploadPhotoToServer();
+      const photo = await uploadPhotoToServer(uri, "postImages");
       await db.firestore().collection("posts").add({
         photo,
         name: state.name,
@@ -110,11 +88,10 @@ export default function CreatePostScreen({ navigation }) {
       throw error;
     }
   }
-
   function hideKeyboard() {
     setKeyboardStatus(false);
     Keyboard.dismiss();
-    i;
+
     setState({
       name: "",
       locationName: "",
@@ -140,7 +117,7 @@ export default function CreatePostScreen({ navigation }) {
           <TouchableOpacity
             activeOpacity={0.8}
             style={styles.btnPhotoWrapper}
-            onPress={takePhoto}
+            onPress={() => takePhoto(camera, setUri, setLocationCoords)}
           >
             <View style={styles.icnWrapper}>
               <IconButton type="photo" focused={false} size="24" />
