@@ -72,9 +72,6 @@ export async function getUserPosts(comments, setComments, setPosts, userId) {
                   },
                 ];
               });
-              //! console
-              console.log({ comments });
-              //!
             });
         });
         comments.map((comment) =>
