@@ -218,5 +218,3 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
-
-// .sort((firstPost, lastPost) => lastPost.date - firstPost.date)
