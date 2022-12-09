@@ -35,7 +35,7 @@ export default function ProfileScreen({ navigation }) {
   }, []);
 
   const Post = (photo, name, locationName, commentNumber, locationCoords) => {
-    // const { latitude, longitude } = locationCoords;
+    const { latitude, longitude } = locationCoords;
 
     return (
       <>
