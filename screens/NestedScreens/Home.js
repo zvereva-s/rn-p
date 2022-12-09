@@ -7,12 +7,11 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
-import { nanoid } from "nanoid";
 
 import IconButton from "../../shared/components/IconButton/IconButton";
 import useAuth from "../../shared/hooks/useAuth";
 
-import db from "../../firebase/config";
+import { fetchPosts } from "../../shared/api/api-posts";
 
 export default function Home({ route, navigation }) {
   const { user } = useAuth();
@@ -21,56 +20,7 @@ export default function Home({ route, navigation }) {
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
-    async function fetchPosts() {
-      try {
-        await db
-          .firestore()
-          .collection("posts")
-          .onSnapshot(({ docs }) => {
-            docs.map((doc) => {
-              db.firestore()
-                .collection("posts")
-                .doc(doc.id)
-                .collection("comments")
-                .onSnapshot(({ docs }) => {
-                  setComments((prevState) => {
-                    return [
-                      ...prevState,
-                      { id: doc.id, commentNumber: docs.length },
-                    ];
-                  });
-                });
-              comments.map((item) => {
-                setPosts((prevState) => {
-                  return [
-                    ...prevState,
-                    {
-                      id: doc.id,
-                      ...doc.data(),
-                      comment: item.id === doc.id && item.commentNumber,
-                    },
-                  ]
-                    .filter(
-                      (post, indx, arr) =>
-                        post.comment !== false && arr.indexOf(post) === indx
-                    )
-                    .sort(
-                      (firstPost, lastPost) => lastPost.date - firstPost.date
-                    );
-                });
-              });
-            });
-          });
-      } catch (error) {
-        console.log(
-          `%c[Error - fetchPosts(): ${error.message}]`,
-          "color: #F44336;"
-        );
-
-        throw error;
-      }
-    }
-    fetchPosts();
+    fetchPosts(comments, setComments, setPosts);
     return () => {
       setComments([]);
       setPosts([]);
