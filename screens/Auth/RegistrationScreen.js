@@ -14,9 +14,15 @@ import {
   Platform,
   Dimensions,
 } from "react-native";
+import { Camera } from "expo-camera";
 
 import { authSignUp } from "../../redux/auth/auth-operations";
 import IconButton from "../../shared/components/IconButton/IconButton";
+
+import {
+  takePhoto,
+  uploadPhotoToServer,
+} from "../../shared/api/api-uploadImages";
 
 export default function RegistrationScreen({ navigation }) {
   const [keyboardStatus, setKeyboardStatus] = useState(false);
@@ -31,16 +37,23 @@ export default function RegistrationScreen({ navigation }) {
     password: "",
   });
   const { login, email, password } = state;
+
+  const [camera, setCamera] = useState("");
+  const [uri, setUri] = useState("");
+  const [locationCoords, setLocationCoords] = useState({
+    latitude: "",
+    longitude: "",
+  });
   const dispatch = useDispatch();
 
-  const [dimensions, setdimensions] = useState(
+  const [dimensions, setDimensions] = useState(
     Dimensions.get("window").width - 16 * 2
   );
 
   useEffect(() => {
     const onChange = () => {
       const width = Dimensions.get("window").width - 16 * 2;
-      setdimensions(width);
+      setDimensions(width);
     };
     Dimensions.addEventListener("change", onChange);
     return () => {
@@ -80,10 +93,21 @@ export default function RegistrationScreen({ navigation }) {
               }}
             >
               <View style={styles.imageWrapper}>
-                <Image />
-                <View style={styles.iconWrapper}>
-                  <IconButton type="add" focused={false} size="35" />
-                </View>
+                {uri && (
+                  <View style={styles.imgContainer}>
+                    <Image source={{ uri }} style={{ height: 240 }} />
+                  </View>
+                )}
+                <Camera style={styles.cameraContainer} ref={setCamera}>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => takePhoto(camera, setUri, setLocationCoords)}
+                  >
+                    <View style={styles.iconWrapper}>
+                      <IconButton type="add" focused={false} size="35" />
+                    </View>
+                  </TouchableOpacity>
+                </Camera>
               </View>
 
               <Text style={styles.headerText}>Регистрация</Text>
