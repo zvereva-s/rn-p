@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {
   StyleSheet,
@@ -7,16 +7,84 @@ import {
   ImageBackground,
   Text,
   TouchableOpacity,
+  FlatList,
 } from "react-native";
 
 import { authSignOut } from "../../redux/auth/auth-operations";
 import useAuth from "../../shared/hooks/useAuth";
+
+import { getUserPosts } from "../../shared/api/api-posts";
 
 import IconButton from "../../shared/components/IconButton/IconButton";
 
 export default function ProfileScreen({ navigation }) {
   const dispatch = useDispatch();
   const { user } = useAuth();
+  const { userId } = user;
+
+  const [userPosts, setUserPosts] = useState([]);
+  const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    getUserPosts(comments, setComments, setUserPosts, userId);
+
+    return () => {
+      setComments([]);
+      setUserPosts([]);
+    };
+  }, []);
+
+  const Post = (photo, name, locationName, commentNumber, locationCoords) => {
+    // const { latitude, longitude } = locationCoords;
+
+    return (
+      <>
+        <Image source={{ uri: photo }} style={styles.imgPost} />
+        <Text style={styles.titlePost}>{name}</Text>
+        <View style={styles.feedbacksWrapper}>
+          <View style={styles.likesCommentsBox}>
+            <View style={styles.likesBox}>
+              <IconButton type="like" focused={true} size="25" />
+              <Text style={styles.feedbackTitle}>8</Text>
+            </View>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={styles.commentsBox}
+              onPress={() => navigation.navigate("Комментарии")}
+            >
+              <IconButton type="comment" focused={true} size="25" />
+              <Text style={styles.feedbackTitle}>{commentNumber}</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.feedbackLocationBox}>
+            <TouchableOpacity
+              style={styles.feedbackLocation}
+              activeOpacity={0.8}
+              onPress={() =>
+                navigate("Карта", {
+                  latitude,
+                  longitude,
+                  locationName,
+                })
+              }
+            >
+              <IconButton type="location" focused={false} size="25" />
+              <Text
+                style={{
+                  ...styles.feedbackTitle,
+                  textAlign: "right",
+                  textDecorationLine: "underline",
+                  marginLeft: 4,
+                }}
+              >
+                {locationName}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -44,46 +112,24 @@ export default function ProfileScreen({ navigation }) {
             <IconButton type="logout" focused={false} size="25" />
           </TouchableOpacity>
           <Text style={styles.headerText}>{user.login}</Text>
-          <View style={styles.postWrapper}>
-            <Image
-              source={require("../../assets/postImg.jpeg")}
-              style={styles.imgPost}
-            />
-            <Text style={styles.titlePost}>Title</Text>
-            <View style={styles.feedbacksWrapper}>
-              <View style={styles.likesCommentsBox}>
-                <View style={styles.likesBox}>
-                  <IconButton type="like" focused={true} size="25" />
-                  <Text style={styles.feedbackTitle}>8</Text>
-                </View>
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  style={styles.commentsBox}
-                  onPress={() => navigation.navigate("Комментарии")}
-                >
-                  <IconButton type="comment" focused={true} size="25" />
-                  <Text style={styles.feedbackTitle}>150</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={styles.feedbackLocationBox}>
-                <View style={styles.feedbackLocation}>
-                  <IconButton type="location" focused={false} size="25" />
-                  <Text
-                    style={{
-                      ...styles.feedbackTitle,
-                      textAlign: "right",
-                      textDecorationLine: "underline",
-                      marginLeft: 4,
-                    }}
-                  >
-                    Kyiv
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
         </View>
       </ImageBackground>
+      <View style={styles.postWrapper}>
+        <FlatList
+          data={userPosts}
+          keyExtractor={({ id }) => id}
+          renderItem={({ item }) => (
+            <Post
+              id={item.id}
+              photo={item.photo}
+              name={item.name}
+              locationName={item.locationName}
+              locationCoords={item.locationCoords}
+              commentNumber={item.commentNumber}
+            />
+          )}
+        />
+      </View>
     </View>
   );
 }
