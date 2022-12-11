@@ -19,14 +19,19 @@ import IconButton from "../../shared/components/IconButton/IconButton";
 
 export default function ProfileScreen({ navigation }) {
   const dispatch = useDispatch();
+  const { navigate } = navigation;
   const { user } = useAuth();
-  const { userId } = user;
+  const { userID } = user;
 
   const [userPosts, setUserPosts] = useState([]);
   const [comments, setComments] = useState([]);
 
+  //! console
+  console.log("userPosts", userPosts);
+  //!
+
   useEffect(() => {
-    getUserPosts(comments, setComments, setUserPosts, userId);
+    getUserPosts(comments, setComments, setUserPosts, userID);
 
     return () => {
       setComments([]);
@@ -34,34 +39,41 @@ export default function ProfileScreen({ navigation }) {
     };
   }, []);
 
-  const Post = (photo, name, locationName, commentNumber, locationCoords) => {
+  const Post = ({
+    id,
+    photo,
+    name,
+    locationName,
+    locationCoords,
+    commentNumber,
+  }) => {
     const { latitude, longitude } = locationCoords;
 
     return (
-      <>
+      <View style={styles.postWrapper}>
         <Image source={{ uri: photo }} style={styles.imgPost} />
         <Text style={styles.titlePost}>{name}</Text>
         <View style={styles.feedbacksWrapper}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.commentsBox}
+            onPress={() => navigate("Комментарии", { photo, id })}
+          >
+            <IconButton type="comment" focused={true} size="25" />
+            <Text style={styles.feedbackTitle}>{commentNumber}</Text>
+          </TouchableOpacity>
           <View style={styles.likesCommentsBox}>
             <View style={styles.likesBox}>
               <IconButton type="like" focused={true} size="25" />
               <Text style={styles.feedbackTitle}>8</Text>
             </View>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              style={styles.commentsBox}
-              onPress={() => navigation.navigate("Комментарии")}
-            >
-              <IconButton type="comment" focused={true} size="25" />
-              <Text style={styles.feedbackTitle}>{commentNumber}</Text>
-            </TouchableOpacity>
           </View>
           <View style={styles.feedbackLocationBox}>
             <TouchableOpacity
               style={styles.feedbackLocation}
               activeOpacity={0.8}
               onPress={() =>
-                navigate("Карта", {
+                navigation.navigate("Карта", {
                   latitude,
                   longitude,
                   locationName,
@@ -82,7 +94,7 @@ export default function ProfileScreen({ navigation }) {
             </TouchableOpacity>
           </View>
         </View>
-      </>
+      </View>
     );
   };
 
@@ -112,24 +124,23 @@ export default function ProfileScreen({ navigation }) {
             <IconButton type="logout" focused={false} size="25" />
           </TouchableOpacity>
           <Text style={styles.headerText}>{user.login}</Text>
+
+          <FlatList
+            data={userPosts}
+            keyExtractor={({ id }) => id}
+            renderItem={({ item }) => (
+              <Post
+                id={item.id}
+                photo={item.photo}
+                name={item.name}
+                locationName={item.locationName}
+                locationCoords={item.locationCoords}
+                commentNumber={item.commentNumber}
+              />
+            )}
+          />
         </View>
       </ImageBackground>
-      <View style={styles.postWrapper}>
-        <FlatList
-          data={userPosts}
-          keyExtractor={({ id }) => id}
-          renderItem={({ item }) => (
-            <Post
-              id={item.id}
-              photo={item.photo}
-              name={item.name}
-              locationName={item.locationName}
-              locationCoords={item.locationCoords}
-              commentNumber={item.commentNumber}
-            />
-          )}
-        />
-      </View>
     </View>
   );
 }
@@ -159,11 +170,10 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 25,
     width: "100%",
 
-    paddingLeft: 16,
-    paddingRight: 16,
     paddingTop: 32,
     paddingBottom: 50,
   },
+
   img: {
     display: "block",
 
@@ -195,9 +205,10 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     marginTop: 52,
   },
+
   postWrapper: {
     width: "100%",
-    marginHorizontal: 16,
+    marginBottom: 32,
   },
   imgPost: {
     display: "block",
