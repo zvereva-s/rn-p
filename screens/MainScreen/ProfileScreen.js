@@ -26,10 +26,6 @@ export default function ProfileScreen({ navigation }) {
   const [userPosts, setUserPosts] = useState([]);
   const [comments, setComments] = useState([]);
 
-  //! console
-  console.log("userPosts", userPosts);
-  //!
-
   useEffect(() => {
     getUserPosts(comments, setComments, setUserPosts, userID);
 
