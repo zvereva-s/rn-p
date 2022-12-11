@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from "react";
-import { LogBox, View } from "react-native";
+import { LogBox } from "react-native";
 import { Provider } from "react-redux";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
