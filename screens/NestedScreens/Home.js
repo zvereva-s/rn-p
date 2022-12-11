@@ -81,36 +81,35 @@ export default function Home({ route, navigation }) {
   };
 
   return (
-    <>
-      <View style={styles.container}>
-        <View style={styles.avatarWrapper}>
-          <Image
-            style={styles.avatar}
-            source={require("../../assets/userAvatar.png")}
-          />
-          <View style={styles.textWrapper}>
-            <Text style={styles.name}>{user.login}</Text>
-            <Text style={styles.email}>{user.email}</Text>
-          </View>
-        </View>
-        <View style={styles.postsWrapper}>
-          <FlatList
-            data={posts}
-            keyExtractor={({ id }) => id}
-            renderItem={({ item }) => (
-              <Item
-                id={item.id}
-                photo={item.photo}
-                name={item.name}
-                locationName={item.locationName}
-                locationCoords={item.locationCoords}
-                commentQuanity={item.comment}
-              />
-            )}
-          />
+    <View onStartShouldSetResponder={() => true} style={styles.container}>
+      <View style={styles.avatarWrapper}>
+        <Image
+          style={styles.avatar}
+          source={require("../../assets/userAvatar.png")}
+        />
+        <View style={styles.textWrapper}>
+          <Text style={styles.name}>{user.login}</Text>
+          <Text style={styles.email}>{user.email}</Text>
         </View>
       </View>
-    </>
+
+      <View style={styles.postsWrapper}>
+        <FlatList
+          data={posts}
+          keyExtractor={({ id }) => id}
+          renderItem={({ item }) => (
+            <Item
+              id={item.id}
+              photo={item.photo}
+              name={item.name}
+              locationName={item.locationName}
+              locationCoords={item.locationCoords}
+              commentQuanity={item.comment}
+            />
+          )}
+        />
+      </View>
+    </View>
   );
 }
 
