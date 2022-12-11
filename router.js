@@ -53,6 +53,7 @@ export default function useRoute(isAuth) {
         name="Профиль"
         component={ProfileScreen}
         options={{
+          headerShown: false,
           tabBarShowLabel: false,
           tabBarIcon: ({ focused }) => (
             <IconButton
