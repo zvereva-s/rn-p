@@ -58,26 +58,14 @@ export async function getUserPosts(comments, setComments, setPosts, userId) {
       .where("userID", "==", userId)
       .onSnapshot(({ docs }) => {
         docs.map((doc) => {
-          db.firestore()
-            .collection("posts")
-            .doc(doc.id)
-            .collection("comments")
-            .onSnapshot(({ docs }) => {
-              setComments((prevState) => {
-                return [
-                  ...prevState,
-                  {
-                    id: doc.id,
-                    commentNumber: docs.length,
-                  },
-                ];
-              });
-            });
+          fetchingCollection(setComments, doc.id);
         });
+
         comments.map((comment) =>
           setPosts(
             docs
               .map((doc) => ({
+                id: doc.id,
                 ...doc.data(),
                 commentNumber:
                   doc.id === comment.id ? comment.commentNumber : 0,
@@ -88,7 +76,35 @@ export async function getUserPosts(comments, setComments, setPosts, userId) {
       });
   } catch (error) {
     console.log(
-      `%c[Error - fetchPosts(): ${error.message}]`,
+      `%c[Error - getUserPosts(): ${error.message}]`,
+      "color: #F44336;"
+    );
+
+    throw error;
+  }
+}
+
+async function fetchingCollection(setComments, id) {
+  try {
+    await db
+      .firestore()
+      .collection("posts")
+      .doc(id)
+      .collection("comments")
+      .onSnapshot(({ docs }) => {
+        setComments((prevState) => {
+          return [
+            ...prevState,
+            {
+              id,
+              commentNumber: docs.length,
+            },
+          ];
+        });
+      });
+  } catch (error) {
+    console.log(
+      `%c[Error - fetchingCollection(): ${error.message}]`,
       "color: #F44336;"
     );
 
