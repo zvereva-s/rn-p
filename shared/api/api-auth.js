@@ -20,7 +20,7 @@ export async function checkAuth() {
       ? {
           email: user.email,
           login: user.displayName,
-          userId: user.uid,
+          userID: user.uid,
         }
       : null;
   });
