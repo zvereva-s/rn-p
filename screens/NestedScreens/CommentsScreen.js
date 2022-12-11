@@ -26,6 +26,10 @@ export default function CommentsScreen({ route }) {
 
   const { photo: uri, id } = route?.params;
 
+  //! console
+  console.log("uri", uri);
+  console.log("id", id);
+
   useEffect(() => {
     async function fetchPostComments() {
       try {
