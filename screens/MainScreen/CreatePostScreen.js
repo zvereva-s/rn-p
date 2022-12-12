@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { nanoid } from "nanoid";
+import React, { useState, useEffect, useLayoutEffect } from "react";
+
 import {
   StyleSheet,
   Image,
@@ -15,7 +15,6 @@ import {
 } from "react-native";
 
 import { Camera } from "expo-camera";
-import * as Location from "expo-location";
 
 import useAuth from "../../shared/hooks/useAuth";
 import db from "../../firebase/config";
@@ -51,6 +50,19 @@ export default function CreatePostScreen({ navigation }) {
     Dimensions.get("window").width - 16 * 2
   );
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <TouchableOpacity
+          style={{ paddingLeft: 10 }}
+          activeOpacity={0.8}
+          onPress={() => navigate("Публикации")}
+        >
+          <IconButton type="arrowLeft" focused={false} size="25" />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
   useEffect(() => {
     const onChange = () => {
       const width = Dimensions.get("window").width - 16 * 2;
