@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
+import { useDispatch } from "react-redux";
 import {
   StyleSheet,
   View,
@@ -11,6 +12,7 @@ import {
 import IconButton from "../../shared/components/IconButton/IconButton";
 import useAuth from "../../shared/hooks/useAuth";
 
+import { authSignOut } from "../../redux/auth/auth-operations";
 import { fetchPosts } from "../../shared/api/api-posts";
 
 export default function Home({ route, navigation }) {
@@ -18,6 +20,27 @@ export default function Home({ route, navigation }) {
   const { navigate } = navigation;
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
+
+  //!
+  console.log({ posts });
+  //!
+  const dispatch = useDispatch();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          style={{ paddingRight: 10 }}
+          activeOpacity={0.8}
+          onPress={() => {
+            dispatch(authSignOut());
+          }}
+        >
+          <IconButton type="logout" focused={false} size="25" />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
 
   useEffect(() => {
     fetchPosts(comments, setComments, setPosts);
