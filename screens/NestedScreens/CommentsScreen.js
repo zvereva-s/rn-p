@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   FlatList,
+  Dimensions,
 } from "react-native";
 
 import db from "../../firebase/config";
@@ -16,7 +17,8 @@ import { handleDate } from "../../shared/utils/utils";
 
 import IconButton from "../../shared/components/IconButton/IconButton";
 
-export default function CommentsScreen({ route }) {
+export default function CommentsScreen({ route, navigation }) {
+  const { navigate } = navigation;
   const auth = useAuth();
 
   const { login } = auth.user;
@@ -24,13 +26,34 @@ export default function CommentsScreen({ route }) {
   const [comments, setComments] = useState([]);
   const [date, setDate] = useState(handleDate());
 
+  const [dimensions, setDimensions] = useState(
+    Dimensions.get("window").width - 16 * 2
+  );
+
   const { photo: uri, id } = route?.params;
 
-  //! console
-  console.log("uri", uri);
-  console.log("id", id);
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <TouchableOpacity
+          style={{ paddingLeft: 10 }}
+          activeOpacity={0.8}
+          onPress={() => navigate("Публикации")}
+        >
+          <IconButton type="arrowLeft" focused={false} size="25" />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
 
   useEffect(() => {
+    const onChange = () => {
+      const width = Dimensions.get("window").width - 16 * 2;
+      setDimensions(width);
+    };
+
+    Dimensions.addEventListener("change", onChange);
+
     async function fetchPostComments() {
       try {
         await db
@@ -60,6 +83,14 @@ export default function CommentsScreen({ route }) {
       }
     }
     fetchPostComments();
+
+    return () => {
+      Dimensions.removeEventListener("change", onChange);
+      setState({
+        name: "",
+        locationName: "",
+      });
+    };
   }, []);
 
   async function handleComment() {
