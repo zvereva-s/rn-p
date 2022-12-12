@@ -33,12 +33,14 @@ export default function useRoute(isAuth) {
       </AuthStack.Navigator>
     );
   }
+
   return (
     <MainTab.Navigator>
       <MainTab.Screen
         name="Публикации"
         component={PostsScreen}
         options={{
+          headerShown: false,
           tabBarShowLabel: false,
           tabBarIcon: ({ focused }) => (
             <IconButton
