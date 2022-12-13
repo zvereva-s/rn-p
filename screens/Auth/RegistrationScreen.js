@@ -14,15 +14,11 @@ import {
   Platform,
   Dimensions,
 } from "react-native";
-import { Camera } from "expo-camera";
+
+import * as ImagePicker from "expo-image-picker";
 
 import { authSignUp } from "../../redux/auth/auth-operations";
 import IconButton from "../../shared/components/IconButton/IconButton";
-
-import {
-  takePhoto,
-  uploadPhotoToServer,
-} from "../../shared/api/api-uploadImages";
 
 export default function RegistrationScreen({ navigation }) {
   const [keyboardStatus, setKeyboardStatus] = useState(false);
@@ -31,6 +27,7 @@ export default function RegistrationScreen({ navigation }) {
   const [emailIsActiveStyle, setEmailIsActiveStyle] = useState({});
   const [passwordIsActiveStyle, setPasswordIsActiveStyle] = useState({});
 
+  const [uri, setUri] = useState("");
   const [state, setState] = useState({
     login: "",
     email: "",
@@ -38,12 +35,6 @@ export default function RegistrationScreen({ navigation }) {
   });
   const { login, email, password } = state;
 
-  const [camera, setCamera] = useState("");
-  const [uri, setUri] = useState("");
-  const [locationCoords, setLocationCoords] = useState({
-    latitude: "",
-    longitude: "",
-  });
   const dispatch = useDispatch();
 
   const [dimensions, setDimensions] = useState(
@@ -60,6 +51,21 @@ export default function RegistrationScreen({ navigation }) {
       Dimensions.removeEventListener("change", onChange);
     };
   }, []);
+
+  async function pickImage() {
+    try {
+      const response = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+      setUri(response.uri);
+    } catch (error) {
+      console.log(error.message);
+      throw error;
+    }
+  }
 
   function hideKeyboard() {
     setKeyboardStatus(false);
@@ -93,21 +99,24 @@ export default function RegistrationScreen({ navigation }) {
               }}
             >
               <View style={styles.imageWrapper}>
-                {uri && (
-                  <View style={styles.imgContainer}>
-                    <Image source={{ uri }} style={{ height: 240 }} />
-                  </View>
+                {uri && <Image style={styles.avatar} source={{ uri }} />}
+                {!uri && (
+                  <Image
+                    style={styles.avatar}
+                    source={require("../../assets/userAvatar.png")}
+                  />
                 )}
-                <Camera style={styles.cameraContainer} ref={setCamera}>
-                  <TouchableOpacity
-                    activeOpacity={0.8}
-                    onPress={() => takePhoto(camera, setUri, setLocationCoords)}
-                  >
-                    <View style={styles.iconWrapper}>
-                      <IconButton type="add" focused={false} size="35" />
-                    </View>
-                  </TouchableOpacity>
-                </Camera>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  style={styles.iconWrapper}
+                  onPress={() => pickImage()}
+                >
+                  <IconButton
+                    type={uri ? "delete" : "add"}
+                    focused={false}
+                    size={uri ? "40" : "25"}
+                  />
+                </TouchableOpacity>
               </View>
 
               <Text style={styles.headerText}>Регистрация</Text>
@@ -223,6 +232,12 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
   },
+  avatar: {
+    borderRadius: 16,
+    width: 120,
+    height: 120,
+  },
+
   iconWrapper: { position: "absolute", right: -15, bottom: 15 },
   form: {
     position: "relative",
