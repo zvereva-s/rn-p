@@ -4,11 +4,14 @@ import db from "../../firebase/config";
 export async function takePhoto(camera, setUri, setLocationCoords) {
   const { uri } = await camera.takePictureAsync();
   setUri(uri);
-  const data = await Location.getCurrentPositionAsync();
-  setLocationCoords({
-    latitude: data.coords.latitude,
-    longitude: data.coords.longitude,
-  });
+
+  if (setLocationCoords) {
+    const data = await Location.getCurrentPositionAsync();
+    setLocationCoords({
+      latitude: data.coords.latitude,
+      longitude: data.coords.longitude,
+    });
+  }
 }
 export async function uploadPhotoToServer(uri, nameCollection) {
   try {
