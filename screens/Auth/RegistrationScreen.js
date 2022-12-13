@@ -13,14 +13,17 @@ import {
   TouchableWithoutFeedback,
   Platform,
   Dimensions,
+  Alert,
 } from "react-native";
-
 import * as ImagePicker from "expo-image-picker";
 
 import { authSignUp } from "../../redux/auth/auth-operations";
+
 import IconButton from "../../shared/components/IconButton/IconButton";
 
 export default function RegistrationScreen({ navigation }) {
+  const { navigate } = navigation;
+
   const [keyboardStatus, setKeyboardStatus] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [loginIsActiveStyle, setLoginIsActiveStyle] = useState({});
@@ -28,6 +31,7 @@ export default function RegistrationScreen({ navigation }) {
   const [passwordIsActiveStyle, setPasswordIsActiveStyle] = useState({});
 
   const [uri, setUri] = useState("");
+
   const [state, setState] = useState({
     login: "",
     email: "",
@@ -51,6 +55,28 @@ export default function RegistrationScreen({ navigation }) {
       Dimensions.removeEventListener("change", onChange);
     };
   }, []);
+
+  function chooseThePicture() {
+    Alert.alert("Do you want to make a photo?", "", [
+      {
+        text: "Set default picture",
+        onPress: () => setUri(""),
+      },
+      {
+        text: "No, I want to upload",
+        onPress: () => pickImage(),
+        // style: "cancel",
+      },
+      {
+        text: "OK, I'll make it",
+        onPress: () => {
+          // setCamera(true);
+          // takePhoto(camera, setUri);
+          navigate({});
+        },
+      },
+    ]);
+  }
 
   async function pickImage() {
     try {
@@ -106,10 +132,11 @@ export default function RegistrationScreen({ navigation }) {
                     source={require("../../assets/userAvatar.png")}
                   />
                 )}
+
                 <TouchableOpacity
                   activeOpacity={0.8}
                   style={styles.iconWrapper}
-                  onPress={() => pickImage()}
+                  onPress={() => chooseThePicture()}
                 >
                   <IconButton
                     type={uri ? "delete" : "add"}
@@ -117,6 +144,7 @@ export default function RegistrationScreen({ navigation }) {
                     size={uri ? "40" : "25"}
                   />
                 </TouchableOpacity>
+                <Camera style={styles.cameraContainer} ref={setCamera}></Camera>
               </View>
 
               <Text style={styles.headerText}>Регистрация</Text>
@@ -237,8 +265,13 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
   },
-
+  cameraContainer: {
+    position: "absolute",
+    top: 0,
+    button: 0,
+  },
   iconWrapper: { position: "absolute", right: -15, bottom: 15 },
+
   form: {
     position: "relative",
     alignItems: "center",
