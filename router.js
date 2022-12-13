@@ -37,7 +37,7 @@ export default function useRoute(isAuth) {
   return (
     <MainTab.Navigator>
       <MainTab.Screen
-        name="Публикации"
+        name="PostsScreen"
         component={PostsScreen}
         options={{
           headerShown: false,
