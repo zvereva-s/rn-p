@@ -9,9 +9,9 @@ export const createOperation = (name, request, condition) => {
         return response;
       } catch (error) {
         console.log("error", error);
-        // console.log("error.message", error.message);
-        // return rejectWithValue(error);
-        throw error;
+        console.log("error.message", error.message);
+        return rejectWithValue(error);
+        // throw error;
       }
     },
     { condition }
