@@ -71,18 +71,18 @@ export default function RegistrationScreen({ navigation }) {
     );
   }
   function chooseThePicture() {
-    Alert.alert("Do you want to make a photo?", "", [
+    Alert.alert("Your picture", "", [
       {
-        text: "Set default picture",
-        onPress: () => setUri(""),
-      },
-      {
-        text: "No, I want to upload",
+        text: "Gallery",
         onPress: () => pickImage(),
       },
       {
-        text: "OK, I'll make it",
+        text: "Camera",
         onPress: () => setMakePhoto(true),
+      },
+      {
+        text: "Cancel",
+        onPress: () => setUri(""),
       },
     ]);
   }
@@ -109,9 +109,9 @@ export default function RegistrationScreen({ navigation }) {
 
   async function handleSubmit() {
     hideKeyboard();
-    uploadPhotoToServer(uri, "userPhoto");
+    const photo = await uploadPhotoToServer(uri, "userPhoto");
     //! cl
-    console.log({ userPhoto });
+    console.log({ photo });
     //!
 
     //!
