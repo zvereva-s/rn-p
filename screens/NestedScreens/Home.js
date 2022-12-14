@@ -106,10 +106,7 @@ export default function Home({ route, navigation }) {
   return (
     <View onStartShouldSetResponder={() => true} style={styles.container}>
       <View style={styles.avatarWrapper}>
-        <Image
-          style={styles.avatar}
-          source={require("../../assets/userAvatar.png")}
-        />
+        <Image style={styles.avatar} source={{ uri: user.photoURL }} />
         <View style={styles.textWrapper}>
           <Text style={styles.name}>{user.login}</Text>
           <Text style={styles.email}>{user.email}</Text>
