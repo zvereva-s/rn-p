@@ -100,7 +100,7 @@ export default function CommentsScreen({ route, navigation }) {
         .collection("posts")
         .doc(id)
         .collection("comments")
-        .add({ comment, login, date, dateID: Date.now() });
+        .add({ comment, login, date, dateID: Date.now(), photoURL });
       setComment("");
     } catch (error) {
       console.log(
@@ -112,7 +112,7 @@ export default function CommentsScreen({ route, navigation }) {
     }
   }
 
-  const MsgComment = ({ photo, login, comment, date, modulo }) => (
+  const MsgComment = ({ photoURL, login, comment, date, modulo }) => (
     <View
       style={
         !modulo
@@ -120,10 +120,7 @@ export default function CommentsScreen({ route, navigation }) {
           : { ...styles.msgWrapper, flexDirection: "row-reverse" }
       }
     >
-      <Image
-        style={styles.avatar}
-        source={require("../../assets/userAvatar.png")}
-      />
+      <Image style={styles.avatar} />
       <View
         style={
           !modulo
