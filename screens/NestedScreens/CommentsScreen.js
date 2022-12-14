@@ -21,7 +21,7 @@ export default function CommentsScreen({ route, navigation }) {
   const { navigate } = navigation;
   const auth = useAuth();
 
-  const { login } = auth.user;
+  const { login, photoURL } = auth.user;
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [date, setDate] = useState(handleDate());
@@ -120,7 +120,7 @@ export default function CommentsScreen({ route, navigation }) {
           : { ...styles.msgWrapper, flexDirection: "row-reverse" }
       }
     >
-      <Image style={styles.avatar} />
+      <Image style={styles.avatar} source={{ uri: photoURL }} />
       <View
         style={
           !modulo
@@ -156,7 +156,7 @@ export default function CommentsScreen({ route, navigation }) {
           const modulo = index % 2 ? true : false;
           return (
             <MsgComment
-              // photo={comment.photo}
+              photoURL={item.photoURL}
               login={item.login}
               comment={item.comment}
               date={item.date}
