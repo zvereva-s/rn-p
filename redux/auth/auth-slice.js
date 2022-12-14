@@ -12,6 +12,7 @@ const initialState = {
     userID: null,
     email: "",
     login: "",
+    photoURL: "",
   },
 
   isLogin: false,
@@ -27,6 +28,7 @@ const fulfilled = (store, { payload }) => {
   store.user.userID = payload?.uid;
   store.user.email = payload.email;
   store.user.login = payload.displayName;
+  store.user.photoURL = payload.photoURL;
 };
 const pending = (store, _) => ({ ...initialState, loading: true });
 const rejected = (store, { payload }) => ({
