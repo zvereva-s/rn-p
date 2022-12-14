@@ -1,17 +1,17 @@
 import { nanoid } from "nanoid";
+import * as Location from "expo-location";
 import db from "../../firebase/config";
 
 export async function takePhoto(camera, setUri, setLocationCoords) {
   const { uri } = await camera.takePictureAsync();
   setUri(uri);
 
-  if (setLocationCoords) {
-    const data = await Location.getCurrentPositionAsync();
-    setLocationCoords({
-      latitude: data.coords.latitude,
-      longitude: data.coords.longitude,
-    });
-  }
+  const data = await Location.getCurrentPositionAsync();
+
+  setLocationCoords({
+    latitude: data.coords.latitude,
+    longitude: data.coords.longitude,
+  });
 }
 export async function uploadPhotoToServer(uri, nameCollection) {
   try {
