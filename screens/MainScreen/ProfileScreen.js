@@ -21,7 +21,7 @@ export default function ProfileScreen({ navigation }) {
   const dispatch = useDispatch();
   const { navigate } = navigation;
   const { user } = useAuth();
-  const { userID } = user;
+  const { userID, photoURL } = user;
 
   const [userPosts, setUserPosts] = useState([]);
   const [comments, setComments] = useState([]);
@@ -102,10 +102,7 @@ export default function ProfileScreen({ navigation }) {
       >
         <View style={styles.wrapper}>
           <View style={styles.imageWrapper}>
-            <Image
-              source={require("../../assets/userAvatar.png")}
-              style={styles.img}
-            />
+            <Image source={{ uri: photoURL }} style={styles.img} />
             <View style={styles.iconWrapper}>
               <IconButton type="delete" focused={false} size="35" />
             </View>
