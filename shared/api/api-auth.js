@@ -1,9 +1,9 @@
 import db from "../../firebase/config";
 
-export async function signUp({ email, password, login }) {
+export async function signUp({ email, password, login, photo }) {
   await db.auth().createUserWithEmailAndPassword(email, password);
   const curUser = db.auth().currentUser;
-  await curUser.updateProfile({ displayName: login });
+  await curUser.updateProfile({ displayName: login, photoURL: photo });
 
   return curUser;
 }
@@ -21,6 +21,7 @@ export async function checkAuth() {
           email: user.email,
           login: user.displayName,
           userID: user.uid,
+          photoURL,
         }
       : null;
   });
