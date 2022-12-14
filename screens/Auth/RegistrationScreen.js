@@ -44,9 +44,8 @@ export default function RegistrationScreen({ navigation }) {
     login: "",
     email: "",
     password: "",
-    userPhoto: "",
   });
-  const { login, email, password, userPhoto } = state;
+  const { login, email, password } = state;
 
   const dispatch = useDispatch();
 
@@ -110,14 +109,8 @@ export default function RegistrationScreen({ navigation }) {
   async function handleSubmit() {
     hideKeyboard();
     const photo = await uploadPhotoToServer(uri, "userPhoto");
-    //! cl
-    console.log({ photo });
-    //!
 
-    //!
-    console.log({ state });
-    //!
-    // dispatch(authSignUp(state));
+    dispatch(authSignUp({ ...state, photo }));
     setState({
       login: "",
       email: "",
