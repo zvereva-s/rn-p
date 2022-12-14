@@ -15,29 +15,38 @@ import {
   Dimensions,
   Alert,
 } from "react-native";
+import { Camera, CameraType } from "expo-camera";
+
 import * as ImagePicker from "expo-image-picker";
 
 import { authSignUp } from "../../redux/auth/auth-operations";
+import {
+  takePhoto,
+  uploadPhotoToServer,
+} from "../../shared/api/api-uploadImages";
 
 import IconButton from "../../shared/components/IconButton/IconButton";
 
 export default function RegistrationScreen({ navigation }) {
-  const { navigate } = navigation;
-
   const [keyboardStatus, setKeyboardStatus] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [loginIsActiveStyle, setLoginIsActiveStyle] = useState({});
   const [emailIsActiveStyle, setEmailIsActiveStyle] = useState({});
   const [passwordIsActiveStyle, setPasswordIsActiveStyle] = useState({});
 
+  const [makePhoto, setMakePhoto] = useState(false);
+  const [type, setType] = useState(CameraType.back);
+  const [camera, setCamera] = useState("");
+  const [photo, setPhoto] = useState("");
   const [uri, setUri] = useState("");
 
   const [state, setState] = useState({
     login: "",
     email: "",
     password: "",
+    userPhoto: "",
   });
-  const { login, email, password } = state;
+  const { login, email, password, userPhoto } = state;
 
   const dispatch = useDispatch();
 
@@ -56,6 +65,11 @@ export default function RegistrationScreen({ navigation }) {
     };
   }, []);
 
+  function toggleCameraType() {
+    setType((current) =>
+      current === CameraType.back ? CameraType.front : CameraType.back
+    );
+  }
   function chooseThePicture() {
     Alert.alert("Do you want to make a photo?", "", [
       {
@@ -65,15 +79,10 @@ export default function RegistrationScreen({ navigation }) {
       {
         text: "No, I want to upload",
         onPress: () => pickImage(),
-        // style: "cancel",
       },
       {
         text: "OK, I'll make it",
-        onPress: () => {
-          // setCamera(true);
-          // takePhoto(camera, setUri);
-          navigate({});
-        },
+        onPress: () => setMakePhoto(true),
       },
     ]);
   }
@@ -98,142 +107,185 @@ export default function RegistrationScreen({ navigation }) {
     Keyboard.dismiss();
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     hideKeyboard();
-    dispatch(authSignUp(state));
+    uploadPhotoToServer(uri, "userPhoto");
+    //! cl
+    console.log({ userPhoto });
+    //!
+
+    //!
+    console.log({ state });
+    //!
+    // dispatch(authSignUp(state));
     setState({
       login: "",
       email: "",
       password: "",
     });
+    setUri("");
   }
 
   return (
-    <TouchableWithoutFeedback onPress={hideKeyboard}>
-      <View style={styles.container}>
-        <ImageBackground
-          style={styles.backGround}
-          source={require("../../assets/photo_bg.png")}
-        >
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-          >
-            <View
-              style={{
-                ...styles.form,
-                bottom: keyboardStatus ? -230 : 0,
+    <>
+      {!makePhoto && (
+        <TouchableWithoutFeedback onPress={hideKeyboard}>
+          <View style={styles.container}>
+            <ImageBackground
+              style={styles.backGround}
+              source={require("../../assets/photo_bg.png")}
+            >
+              <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+              >
+                <View
+                  style={{
+                    ...styles.form,
+                    bottom: keyboardStatus ? -230 : 0,
+                  }}
+                >
+                  <View style={styles.imageWrapper}>
+                    {uri && <Image style={styles.avatar} source={{ uri }} />}
+                    {!uri && (
+                      <Image
+                        style={styles.avatar}
+                        source={require("../../assets/userAvatar.png")}
+                      />
+                    )}
+
+                    <TouchableOpacity
+                      activeOpacity={0.8}
+                      style={styles.iconWrapper}
+                      onPress={() => chooseThePicture()}
+                    >
+                      <IconButton
+                        type={uri ? "delete" : "add"}
+                        focused={false}
+                        size={uri ? "40" : "25"}
+                      />
+                    </TouchableOpacity>
+                  </View>
+
+                  <Text style={styles.headerText}>Регистрация</Text>
+                  <View
+                    style={{
+                      width: dimensions,
+                      alignItems: "center",
+                      position: "relative",
+                    }}
+                  >
+                    <TextInput
+                      style={{ ...styles.input, ...loginIsActiveStyle }}
+                      placeholder="Логин"
+                      selectionColor="orange"
+                      activeUnderlineColor="orange"
+                      value={login}
+                      onFocus={() => {
+                        setLoginIsActiveStyle(styles.isFocused);
+                        setKeyboardStatus(true);
+                      }}
+                      onBlur={() => setLoginIsActiveStyle({})}
+                      onChangeText={(value) => {
+                        setState((prev) => ({ ...prev, login: value }));
+                      }}
+                    />
+                    <TextInput
+                      style={{
+                        ...styles.input,
+                        ...emailIsActiveStyle,
+                      }}
+                      placeholder="Адрес электронной почты"
+                      keyboardType="email - address"
+                      value={email}
+                      onFocus={() => {
+                        setEmailIsActiveStyle(styles.isFocused);
+                        setKeyboardStatus(true);
+                      }}
+                      onBlur={() => setEmailIsActiveStyle({})}
+                      onChangeText={(value) => {
+                        setState((prev) => ({ ...prev, email: value }));
+                      }}
+                    />
+                    <TextInput
+                      style={{
+                        ...styles.input,
+                        ...passwordIsActiveStyle,
+                      }}
+                      placeholder="Пароль"
+                      secureTextEntry={secureTextEntry}
+                      value={password}
+                      onFocus={() => {
+                        setPasswordIsActiveStyle(styles.isFocused);
+                        setKeyboardStatus(true);
+                      }}
+                      onBlur={() => {
+                        setPasswordIsActiveStyle({});
+                        setKeyboardStatus(!keyboardStatus);
+                      }}
+                      onChangeText={(value) => {
+                        setState((prev) => ({ ...prev, password: value }));
+                      }}
+                    />
+                    <Text
+                      onPress={() => setSecureTextEntry(!secureTextEntry)}
+                      style={styles.linkShow}
+                    >
+                      Показать
+                    </Text>
+                    <TouchableOpacity
+                      activeOpacity={0.8}
+                      style={styles.btn}
+                      onPress={handleSubmit}
+                    >
+                      <Text style={styles.btnTitle}>Зарегистрироваться</Text>
+                    </TouchableOpacity>
+                    <Text
+                      style={styles.linkPath}
+                      onPress={() => {
+                        navigation.navigate("Login");
+                      }}
+                    >
+                      Уже есть аккаунт? Войти
+                    </Text>
+                  </View>
+                </View>
+              </KeyboardAvoidingView>
+            </ImageBackground>
+          </View>
+        </TouchableWithoutFeedback>
+      )}
+      {makePhoto && (
+        <View style={styles.containerMakePhoto}>
+          <Camera style={styles.cameraContainer} ref={setCamera}>
+            <TouchableOpacity
+              style={styles.btnChangeType}
+              stylactiveOpacity={0.8}
+              onPress={() => toggleCameraType}
+            >
+              <Text style={styles.btnTitle}>Change Camera Type</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              stylactiveOpacity={0.8}
+              onPress={() => takePhoto(camera, setPhoto)}
+            >
+              <IconButton type="photo" focused={false} size="50" />
+            </TouchableOpacity>
+          </Camera>
+          {photo && (
+            <TouchableOpacity
+              style={styles.btnWrapperMakePhoto}
+              stylactiveOpacity={0.8}
+              onPress={() => {
+                setUri(photo);
+                setMakePhoto(false);
               }}
             >
-              <View style={styles.imageWrapper}>
-                {uri && <Image style={styles.avatar} source={{ uri }} />}
-                {!uri && (
-                  <Image
-                    style={styles.avatar}
-                    source={require("../../assets/userAvatar.png")}
-                  />
-                )}
-
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  style={styles.iconWrapper}
-                  onPress={() => chooseThePicture()}
-                >
-                  <IconButton
-                    type={uri ? "delete" : "add"}
-                    focused={false}
-                    size={uri ? "40" : "25"}
-                  />
-                </TouchableOpacity>
-                <Camera style={styles.cameraContainer} ref={setCamera}></Camera>
-              </View>
-
-              <Text style={styles.headerText}>Регистрация</Text>
-              <View
-                style={{
-                  width: dimensions,
-                  alignItems: "center",
-                  position: "relative",
-                }}
-              >
-                <TextInput
-                  style={{ ...styles.input, ...loginIsActiveStyle }}
-                  placeholder="Логин"
-                  selectionColor="orange"
-                  activeUnderlineColor="orange"
-                  value={login}
-                  onFocus={() => {
-                    setLoginIsActiveStyle(styles.isFocused);
-                    setKeyboardStatus(true);
-                  }}
-                  onBlur={() => setLoginIsActiveStyle({})}
-                  onChangeText={(value) => {
-                    setState((prev) => ({ ...prev, login: value }));
-                  }}
-                />
-                <TextInput
-                  style={{
-                    ...styles.input,
-                    ...emailIsActiveStyle,
-                  }}
-                  placeholder="Адрес электронной почты"
-                  keyboardType="email - address"
-                  value={email}
-                  onFocus={() => {
-                    setEmailIsActiveStyle(styles.isFocused);
-                    setKeyboardStatus(true);
-                  }}
-                  onBlur={() => setEmailIsActiveStyle({})}
-                  onChangeText={(value) => {
-                    setState((prev) => ({ ...prev, email: value }));
-                  }}
-                />
-                <TextInput
-                  style={{
-                    ...styles.input,
-                    ...passwordIsActiveStyle,
-                  }}
-                  placeholder="Пароль"
-                  secureTextEntry={secureTextEntry}
-                  value={password}
-                  onFocus={() => {
-                    setPasswordIsActiveStyle(styles.isFocused);
-                    setKeyboardStatus(true);
-                  }}
-                  onBlur={() => {
-                    setPasswordIsActiveStyle({});
-                    setKeyboardStatus(!keyboardStatus);
-                  }}
-                  onChangeText={(value) => {
-                    setState((prev) => ({ ...prev, password: value }));
-                  }}
-                />
-                <Text
-                  onPress={() => setSecureTextEntry(!secureTextEntry)}
-                  style={styles.linkShow}
-                >
-                  Показать
-                </Text>
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  style={styles.btn}
-                  onPress={handleSubmit}
-                >
-                  <Text style={styles.btnTitle}>Зарегистрироваться</Text>
-                </TouchableOpacity>
-                <Text
-                  style={styles.linkPath}
-                  onPress={() => {
-                    navigation.navigate("Login");
-                  }}
-                >
-                  Уже есть аккаунт? Войти
-                </Text>
-              </View>
-            </View>
-          </KeyboardAvoidingView>
-        </ImageBackground>
-      </View>
-    </TouchableWithoutFeedback>
+              <Text style={styles.btnTitle}>Add photo</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      )}
+    </>
   );
 }
 
@@ -265,11 +317,7 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
   },
-  cameraContainer: {
-    position: "absolute",
-    top: 0,
-    button: 0,
-  },
+
   iconWrapper: { position: "absolute", right: -15, bottom: 15 },
 
   form: {
@@ -363,5 +411,38 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 19,
     color: "#1B4371",
+  },
+
+  containerMakePhoto: {
+    flex: 1,
+    justifyContent: "center",
+    width: "100%",
+  },
+  cameraContainer: {
+    flex: 10,
+    position: "relative",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  btnChangeType: {
+    position: "absolute",
+    bottom: 100,
+    opacity: 0.5,
+  },
+  btnWrapperMakePhoto: {
+    position: "absolute",
+    bottom: 40,
+    right: 16,
+    left: 16,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "90%",
+
+    padding: 16,
+
+    backgroundColor: "#FF6C00",
+
+    btnWrapper: 1,
+    borderRadius: 100,
   },
 });
