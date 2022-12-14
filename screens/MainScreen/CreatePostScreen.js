@@ -114,7 +114,12 @@ export default function CreatePostScreen({ navigation }) {
       setSubmitFocus(true);
     }
     uploadPostToServer();
-    navigate("Home");
+    navigate("Публикации");
+    setState({
+      name: "",
+      locationName: "",
+    });
+    setUri("");
   }
 
   return (
@@ -129,7 +134,10 @@ export default function CreatePostScreen({ navigation }) {
           <TouchableOpacity
             activeOpacity={0.8}
             style={styles.btnPhotoWrapper}
-            onPress={() => takePhoto(camera, setUri, setLocationCoords)}
+            onPress={() => {
+              takePhoto(camera, setUri, setLocationCoords);
+              console.log({ locationCoords });
+            }}
           >
             <View style={styles.icnWrapper}>
               <IconButton type="photo" focused={false} size="24" />
