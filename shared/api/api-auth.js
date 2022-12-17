@@ -32,3 +32,9 @@ export async function checkAuth() {
 export async function signOut() {
   await db.auth().signOut();
 }
+
+export async function updateProfilePhoto(uri) {
+  const curUser = db.auth().currentUser;
+  await curUser.updateProfile({ photoURL: uri });
+  return curUser;
+}
