@@ -5,6 +5,7 @@ import {
   authSignIn,
   authSignOut,
   authCheckAuth,
+  authUpdateProfilePhoto,
 } from "./auth-operations";
 
 const initialState = {
@@ -66,6 +67,15 @@ const authSlice = createSlice({
       }
       return { ...initialState };
     },
+
+    [authUpdateProfilePhoto.pending]: pending,
+    [authUpdateProfilePhoto.rejected]: rejected,
+    [authUpdateProfilePhoto.fulfilled]: (store, { payload }) => ({
+      ...store,
+      user: { ...user, photoURL: payload.photoURL },
+      loading: false,
+      error: false,
+    }),
   },
 });
 export default authSlice.reducer;
