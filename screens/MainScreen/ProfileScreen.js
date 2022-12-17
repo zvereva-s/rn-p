@@ -11,6 +11,7 @@ import {
 } from "react-native";
 
 import { authSignOut } from "../../redux/auth/auth-operations";
+import useMakePhoto from "../../shared/hooks/useMakePhoto";
 import useAuth from "../../shared/hooks/useAuth";
 
 import { getUserPosts } from "../../shared/api/api-posts";
@@ -19,6 +20,8 @@ import IconButton from "../../shared/components/IconButton/IconButton";
 
 export default function ProfileScreen({ navigation }) {
   const dispatch = useDispatch();
+
+  const { makePhoto, uri, chooseThePicture, markUp } = useMakePhoto();
   const { navigate } = navigation;
   const { user } = useAuth();
   const { userID, photoURL } = user;
@@ -95,46 +98,70 @@ export default function ProfileScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-      <ImageBackground
-        style={styles.backGround}
-        source={require("../../assets/photo_bg.png")}
-      >
-        <View style={styles.wrapper}>
-          <View style={styles.imageWrapper}>
-            <Image source={{ uri: photoURL }} style={styles.img} />
-            <View style={styles.iconWrapper}>
-              <IconButton type="delete" focused={false} size="35" />
-            </View>
-          </View>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => {
-              dispatch(authSignOut());
-            }}
-            style={{ ...styles.iconWrapper, right: 10, top: 21 }}
+    <>
+      {!makePhoto && (
+        <View style={styles.container}>
+          <ImageBackground
+            style={styles.backGround}
+            source={require("../../assets/photo_bg.png")}
           >
-            <IconButton type="logout" focused={false} size="25" />
-          </TouchableOpacity>
-          <Text style={styles.headerText}>{user.login}</Text>
+            <View style={styles.wrapper}>
+              <View style={styles.imageWrapper}>
+                {uri && <Image style={styles.avatar} source={{ uri }} />}
+                {!uri && (
+                  <Image
+                    style={styles.avatar}
+                    source={
+                      photoURL
+                        ? { uri: photoURL }
+                        : require("../../assets/userAvatar.png")
+                    }
+                  />
+                )}
+                <Image source={{ uri: photoURL }} style={styles.img} />
+                <TouchableOpacity
+                  style={styles.iconWrapper}
+                  activeOpacity={0.8}
+                  onPress={() => chooseThePicture()}
+                >
+                  <IconButton
+                    type={uri ? "delete" : "add"}
+                    focused={false}
+                    size={uri ? "40" : "25"}
+                  />
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => {
+                  dispatch(authSignOut());
+                }}
+                style={{ ...styles.iconWrapper, right: 10, top: 21 }}
+              >
+                <IconButton type="logout" focused={false} size="25" />
+              </TouchableOpacity>
+              <Text style={styles.headerText}>{user.login}</Text>
 
-          <FlatList
-            data={userPosts}
-            keyExtractor={({ id }) => id}
-            renderItem={({ item }) => (
-              <Post
-                id={item.id}
-                photo={item.photo}
-                name={item.name}
-                locationName={item.locationName}
-                locationCoords={item.locationCoords}
-                commentNumber={item.commentNumber}
+              <FlatList
+                data={userPosts}
+                keyExtractor={({ id }) => id}
+                renderItem={({ item }) => (
+                  <Post
+                    id={item.id}
+                    photo={item.photo}
+                    name={item.name}
+                    locationName={item.locationName}
+                    locationCoords={item.locationCoords}
+                    commentNumber={item.commentNumber}
+                  />
+                )}
               />
-            )}
-          />
+            </View>
+          </ImageBackground>
         </View>
-      </ImageBackground>
-    </View>
+      )}
+      {makePhoto && markUp}
+    </>
   );
 }
 
@@ -180,6 +207,11 @@ const styles = StyleSheet.create({
 
     borderRadius: 16,
 
+    width: 120,
+    height: 120,
+  },
+  avatar: {
+    borderRadius: 16,
     width: 120,
     height: 120,
   },
