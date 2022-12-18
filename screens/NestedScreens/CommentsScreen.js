@@ -46,11 +46,8 @@ export default function CommentsScreen({ route, navigation }) {
     });
   }, [navigation]);
 
-  useLayoutEffect(() => {
-    fetchPostComments();
-  }, [comments]);
-
   useEffect(() => {
+    fetchPostComments();
     const onChange = () => {
       const width = Dimensions.get("window").width - 16 * 2;
       setDimensions(width);
@@ -64,7 +61,7 @@ export default function CommentsScreen({ route, navigation }) {
         locationName: "",
       });
     };
-  }, []);
+  }, [comments]);
 
   async function fetchPostComments() {
     try {
