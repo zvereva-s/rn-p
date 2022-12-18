@@ -21,9 +21,6 @@ export default function Home({ route, navigation }) {
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
 
-  //!
-  console.log({ posts });
-  //!
   const dispatch = useDispatch();
 
   useLayoutEffect(() => {
@@ -42,16 +39,13 @@ export default function Home({ route, navigation }) {
     });
   }, [navigation]);
 
-  useLayoutEffect(() => {
-    fetchPosts(comments, setComments, setPosts);
-  }, [posts]);
-
   useEffect(() => {
+    fetchPosts(comments, setComments, setPosts);
     return () => {
       setComments([]);
       setPosts([]);
     };
-  }, []);
+  }, [posts]);
 
   const Item = ({
     photo,
