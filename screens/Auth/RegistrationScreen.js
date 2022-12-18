@@ -15,15 +15,10 @@ import {
   Dimensions,
   Alert,
 } from "react-native";
-import { Camera, CameraType } from "expo-camera";
 
-import * as ImagePicker from "expo-image-picker";
+import useMakePhoto from "../../shared/hooks/useMakePhoto";
 
 import { authSignUp } from "../../redux/auth/auth-operations";
-import {
-  takePhoto,
-  uploadPhotoToServer,
-} from "../../shared/api/api-uploadImages";
 
 import IconButton from "../../shared/components/IconButton/IconButton";
 
@@ -33,12 +28,9 @@ export default function RegistrationScreen({ navigation }) {
   const [loginIsActiveStyle, setLoginIsActiveStyle] = useState({});
   const [emailIsActiveStyle, setEmailIsActiveStyle] = useState({});
   const [passwordIsActiveStyle, setPasswordIsActiveStyle] = useState({});
-
-  const [makePhoto, setMakePhoto] = useState(false);
-  const [type, setType] = useState(CameraType.back);
-  const [camera, setCamera] = useState("");
-  const [photo, setPhoto] = useState("");
-  const [uri, setUri] = useState("");
+  const [dimensions, setDimensions] = useState(
+    Dimensions.get("window").width - 16 * 2
+  );
 
   const [state, setState] = useState({
     login: "",
@@ -47,11 +39,8 @@ export default function RegistrationScreen({ navigation }) {
   });
   const { login, email, password } = state;
 
+  const { makePhoto, uri, chooseThePicture, markUp } = useMakePhoto();
   const dispatch = useDispatch();
-
-  const [dimensions, setDimensions] = useState(
-    Dimensions.get("window").width - 16 * 2
-  );
 
   useEffect(() => {
     const onChange = () => {
@@ -63,43 +52,6 @@ export default function RegistrationScreen({ navigation }) {
       Dimensions.removeEventListener("change", onChange);
     };
   }, []);
-
-  function toggleCameraType() {
-    setType((current) =>
-      current === CameraType.back ? CameraType.front : CameraType.back
-    );
-  }
-  function chooseThePicture() {
-    Alert.alert("Your picture", "", [
-      {
-        text: "Gallery",
-        onPress: () => pickImage(),
-      },
-      {
-        text: "Camera",
-        onPress: () => setMakePhoto(true),
-      },
-      {
-        text: "Cancel",
-        onPress: () => setUri(""),
-      },
-    ]);
-  }
-
-  async function pickImage() {
-    try {
-      const response = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-      });
-      setUri(response.uri);
-    } catch (error) {
-      console.log(error.message);
-      throw error;
-    }
-  }
 
   function hideKeyboard() {
     setKeyboardStatus(false);
@@ -247,37 +199,7 @@ export default function RegistrationScreen({ navigation }) {
           </View>
         </TouchableWithoutFeedback>
       )}
-      {makePhoto && (
-        <View style={styles.containerMakePhoto}>
-          <Camera style={styles.cameraContainer} ref={setCamera}>
-            <TouchableOpacity
-              style={styles.btnChangeType}
-              stylactiveOpacity={0.8}
-              onPress={() => toggleCameraType}
-            >
-              <Text style={styles.btnTitle}>Change Camera Type</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              stylactiveOpacity={0.8}
-              onPress={() => takePhoto(camera, setPhoto)}
-            >
-              <IconButton type="photo" focused={false} size="50" />
-            </TouchableOpacity>
-          </Camera>
-          {photo && (
-            <TouchableOpacity
-              style={styles.btnWrapperMakePhoto}
-              stylactiveOpacity={0.8}
-              onPress={() => {
-                setUri(photo);
-                setMakePhoto(false);
-              }}
-            >
-              <Text style={styles.btnTitle}>Add photo</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-      )}
+      {makePhoto && markUp}
     </>
   );
 }
