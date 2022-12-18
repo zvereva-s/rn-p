@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useDispatch } from "react-redux";
 import {
   StyleSheet,
@@ -10,7 +10,11 @@ import {
   FlatList,
 } from "react-native";
 
-import { authSignOut } from "../../redux/auth/auth-operations";
+import {
+  authSignOut,
+  authUpdateProfilePhoto,
+} from "../../redux/auth/auth-operations";
+
 import useMakePhoto from "../../shared/hooks/useMakePhoto";
 import useAuth from "../../shared/hooks/useAuth";
 
@@ -29,10 +33,20 @@ export default function ProfileScreen({ navigation }) {
   const [userPosts, setUserPosts] = useState([]);
   const [comments, setComments] = useState([]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     getUserPosts(comments, setComments, setUserPosts, userID);
+  }, [userPosts]);
+
+  useEffect(() => {
+    //! console
+    console.log("useEffect", { uri });
+    //!
 
     return () => {
+      //! console
+      console.log("uri in unmount profile", { uri });
+      //!
+      dispatch(authUpdateProfilePhoto(uri));
       setComments([]);
       setUserPosts([]);
     };
@@ -118,7 +132,6 @@ export default function ProfileScreen({ navigation }) {
                     }
                   />
                 )}
-                <Image source={{ uri: photoURL }} style={styles.img} />
                 <TouchableOpacity
                   style={styles.iconWrapper}
                   activeOpacity={0.8}
