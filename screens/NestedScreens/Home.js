@@ -42,8 +42,11 @@ export default function Home({ route, navigation }) {
     });
   }, [navigation]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     fetchPosts(comments, setComments, setPosts);
+  }, [posts]);
+
+  useEffect(() => {
     return () => {
       setComments([]);
       setPosts([]);
@@ -106,7 +109,14 @@ export default function Home({ route, navigation }) {
   return (
     <View onStartShouldSetResponder={() => true} style={styles.container}>
       <View style={styles.avatarWrapper}>
-        <Image style={styles.avatar} source={{ uri: user.photoURL }} />
+        <Image
+          style={styles.avatar}
+          source={
+            user.photoURL
+              ? { uri: user.photoURL }
+              : require("../../assets/userAvatar.png")
+          }
+        />
         <View style={styles.textWrapper}>
           <Text style={styles.name}>{user.login}</Text>
           <Text style={styles.email}>{user.email}</Text>
