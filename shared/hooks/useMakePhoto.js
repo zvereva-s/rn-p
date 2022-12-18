@@ -35,6 +35,7 @@ export default function useMakePhoto() {
     );
   }
   function chooseThePicture() {
+    setMakePhoto(false);
     Alert.alert("Your picture", "", [
       {
         text: "Gallery",
@@ -90,6 +91,7 @@ export default function useMakePhoto() {
           onPress={() => {
             setUri(photo);
             setMakePhoto(false);
+            setPhoto(false);
           }}
         >
           <Text style={styles.btnTitle}>Add photo</Text>
@@ -117,6 +119,15 @@ const styles = StyleSheet.create({
     position: "relative",
     justifyContent: "center",
     alignItems: "center",
+  },
+  btnTitle: {
+    fontFamily: "Roboto",
+    fontStyle: "normal",
+    fontWeight: "400",
+    fontSize: 16,
+    lineHeight: "19",
+
+    color: "#FFF",
   },
   btnChangeType: {
     position: "absolute",
