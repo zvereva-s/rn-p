@@ -33,24 +33,15 @@ export default function ProfileScreen({ navigation }) {
   const [userPosts, setUserPosts] = useState([]);
   const [comments, setComments] = useState([]);
 
-  useLayoutEffect(() => {
-    getUserPosts(comments, setComments, setUserPosts, userID);
-  }, [userPosts]);
-
   useEffect(() => {
-    //! console
-    console.log("useEffect", { uri });
-    //!
+    getUserPosts(comments, setComments, setUserPosts, userID);
 
     return () => {
-      //! console
-      console.log("uri in unmount profile", { uri });
-      //!
       dispatch(authUpdateProfilePhoto(uri));
       setComments([]);
       setUserPosts([]);
     };
-  }, []);
+  }, [userPosts, uri]);
 
   const Post = ({
     id,
