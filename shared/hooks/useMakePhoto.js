@@ -16,7 +16,6 @@ import {
   Alert,
 } from "react-native";
 import { Camera, CameraType } from "expo-camera";
-
 import * as ImagePicker from "expo-image-picker";
 
 import { takePhoto } from "../../shared/api/api-uploadImages";
