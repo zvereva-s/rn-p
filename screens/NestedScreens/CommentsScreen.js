@@ -46,6 +46,10 @@ export default function CommentsScreen({ route, navigation }) {
     });
   }, [navigation]);
 
+  useLayoutEffect(() => {
+    fetchPostComments();
+  }, [comments]);
+
   useEffect(() => {
     const onChange = () => {
       const width = Dimensions.get("window").width - 16 * 2;
@@ -53,37 +57,6 @@ export default function CommentsScreen({ route, navigation }) {
     };
 
     Dimensions.addEventListener("change", onChange);
-
-    async function fetchPostComments() {
-      try {
-        await db
-          .firestore()
-          .collection("posts")
-          .doc(id)
-          .collection("comments")
-          .onSnapshot(({ docs }) => {
-            setComments(
-              docs
-                .map((doc) => ({
-                  ...doc.data(),
-                  id: doc.id,
-                }))
-                .sort(
-                  (firstPost, lastPost) => lastPost.dateID - firstPost.dateID
-                )
-            );
-          });
-      } catch (error) {
-        console.log(
-          `%c[Error - fetchPostComments(): ${error.message}]`,
-          "color: #F44336;"
-        );
-
-        throw error;
-      }
-    }
-    fetchPostComments();
-
     return () => {
       Dimensions.removeEventListener("change", onChange);
       setState({
@@ -93,6 +66,32 @@ export default function CommentsScreen({ route, navigation }) {
     };
   }, []);
 
+  async function fetchPostComments() {
+    try {
+      await db
+        .firestore()
+        .collection("posts")
+        .doc(id)
+        .collection("comments")
+        .onSnapshot(({ docs }) => {
+          setComments(
+            docs
+              .map((doc) => ({
+                ...doc.data(),
+                id: doc.id,
+              }))
+              .sort((firstPost, lastPost) => lastPost.dateID - firstPost.dateID)
+          );
+        });
+    } catch (error) {
+      console.log(
+        `%c[Error - fetchPostComments(): ${error.message}]`,
+        "color: #F44336;"
+      );
+
+      throw error;
+    }
+  }
   async function handleComment() {
     try {
       await db
@@ -120,7 +119,12 @@ export default function CommentsScreen({ route, navigation }) {
           : { ...styles.msgWrapper, flexDirection: "row-reverse" }
       }
     >
-      <Image style={styles.avatar} source={{ uri: photoURL }} />
+      <Image
+        style={styles.avatar}
+        source={
+          photoURL ? { uri: photoURL } : require("../../assets/userAvatar.png")
+        }
+      />
       <View
         style={
           !modulo
