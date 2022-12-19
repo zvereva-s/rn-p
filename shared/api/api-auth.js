@@ -10,6 +10,11 @@ export async function signUp({ email, password, login, photo }) {
 
 export async function signIn({ email, password }) {
   const { user } = await db.auth().signInWithEmailAndPassword(email, password);
+
+  //! console
+  console.log({ user });
+  //! console
+
   return user;
 }
 
@@ -25,7 +30,9 @@ export async function checkAuth() {
         }
       : null;
   });
-
+  //! console
+  console.log({ currentUser });
+  //!
   return currentUser;
 }
 
@@ -33,8 +40,11 @@ export async function signOut() {
   await db.auth().signOut();
 }
 
-export async function updateProfilePhoto(uri) {
+export async function updateProfilePhoto(photo) {
   const curUser = db.auth().currentUser;
-  await curUser.updateProfile({ photoURL: uri });
+  //! console
+  console.log("updateProfilePhoto curUser", curUser);
+  //! console
+  await curUser.updateProfile({ photoURL: photo });
   return curUser;
 }

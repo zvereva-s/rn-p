@@ -61,7 +61,7 @@ export default function CommentsScreen({ route, navigation }) {
         locationName: "",
       });
     };
-  }, [comments]);
+  }, []);
 
   async function fetchPostComments() {
     try {

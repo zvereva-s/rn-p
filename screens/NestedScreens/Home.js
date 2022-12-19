@@ -23,6 +23,9 @@ export default function Home({ route, navigation }) {
 
   const dispatch = useDispatch();
 
+  //! console
+  console.log({ posts });
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -41,11 +44,12 @@ export default function Home({ route, navigation }) {
 
   useEffect(() => {
     fetchPosts(comments, setComments, setPosts);
+
     return () => {
       setComments([]);
       setPosts([]);
     };
-  }, [posts]);
+  }, []);
 
   const Item = ({
     photo,

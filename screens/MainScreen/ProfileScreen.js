@@ -19,6 +19,7 @@ import useMakePhoto from "../../shared/hooks/useMakePhoto";
 import useAuth from "../../shared/hooks/useAuth";
 
 import { getUserPosts } from "../../shared/api/api-posts";
+import { uploadPhotoToServer } from "../../shared/api/api-uploadImages";
 
 import IconButton from "../../shared/components/IconButton/IconButton";
 
@@ -36,12 +37,19 @@ export default function ProfileScreen({ navigation }) {
   useEffect(() => {
     getUserPosts(comments, setComments, setUserPosts, userID);
 
-    return () => {
-      dispatch(authUpdateProfilePhoto(uri));
+    return async () => {
       setComments([]);
       setUserPosts([]);
     };
-  }, [userPosts, uri]);
+  }, []);
+
+  // setTimeout(() => {
+  //   const photo = uploadPhotoToServer(uri, "userPhoto");
+  //   //! console
+  //   console.log("async photo profile", photo);
+  //   //!
+  //   dispatch(authUpdateProfilePhoto(photo));
+  // }, 250);
 
   const Post = ({
     id,

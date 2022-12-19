@@ -1,5 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 
 import LoginScreen from "./screens/Auth/LoginScreen";
 import RegistrationScreen from "./screens/Auth/RegistrationScreen";
@@ -38,9 +39,9 @@ export default function useRoute(isAuth) {
   return (
     <MainTab.Navigator>
       <MainTab.Screen
-        name="PostsScreen"
+        name="Публикации"
         component={PostsScreen}
-        options={{
+        options={({ route }) => ({
           headerShown: false,
           tabBarShowLabel: false,
           tabBarIcon: ({ focused }) => (
@@ -50,7 +51,15 @@ export default function useRoute(isAuth) {
               size={focused ? 40 : 40}
             />
           ),
-        }}
+          tabBarStyle: ((route) => {
+            const routeName = getFocusedRouteNameFromRoute(route) ?? "";
+            console.log(routeName);
+            if (routeName === "Комментарии" || routeName === "Карта") {
+              return { display: "none" };
+            }
+            return;
+          })(route),
+        })}
       />
       <MainTab.Screen
         name="Профиль"
@@ -68,9 +77,11 @@ export default function useRoute(isAuth) {
         }}
       />
       <MainTab.Screen
-        name="Создать публикацию"
+        name="CreatePost"
         component={CreatePostScreen}
         options={{
+          headerShown: false,
+          tabBarStyle: { display: "none" },
           tabBarShowLabel: false,
           tabBarIcon: ({ focused }) => (
             <IconButton

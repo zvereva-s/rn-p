@@ -27,9 +27,9 @@ const fulfilled = (store, { payload }) => {
   store.error = null;
 
   store.user.userID = payload?.uid;
-  store.user.email = payload.email;
-  store.user.login = payload.displayName;
-  store.user.photoURL = payload.photoURL;
+  store.user.email = payload?.email;
+  store.user.login = payload?.displayName;
+  store.user.photoURL = payload?.photoURL;
 };
 const pending = (store, _) => ({ ...initialState, loading: true });
 const rejected = (store, { payload }) => ({
@@ -70,12 +70,7 @@ const authSlice = createSlice({
 
     [authUpdateProfilePhoto.pending]: pending,
     [authUpdateProfilePhoto.rejected]: rejected,
-    [authUpdateProfilePhoto.fulfilled]: (store, { payload }) => ({
-      ...store,
-      user: { ...user, photoURL: payload.photoURL },
-      loading: false,
-      error: false,
-    }),
+    [authUpdateProfilePhoto.fulfilled]: fulfilled,
   },
 });
 export default authSlice.reducer;

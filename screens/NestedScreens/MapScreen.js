@@ -1,9 +1,26 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
+import React, { useLayoutEffect } from "react";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 
-export default function MapScreen({ route }) {
+import IconButton from "../../shared/components/IconButton/IconButton";
+
+export default function MapScreen({ route, navigation }) {
   const { latitude, longitude, locationName } = route.params;
+  const { navigate } = navigation;
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <TouchableOpacity
+          style={{ paddingLeft: 10 }}
+          activeOpacity={0.8}
+          onPress={() => navigate("Публикации")}
+        >
+          <IconButton type="arrowLeft" focused={false} size="25" />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
 
   return (
     <View style={styles.container}>

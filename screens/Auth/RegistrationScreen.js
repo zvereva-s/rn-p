@@ -19,7 +19,7 @@ import {
 import useMakePhoto from "../../shared/hooks/useMakePhoto";
 
 import { authSignUp } from "../../redux/auth/auth-operations";
-
+import { uploadPhotoToServer } from "../../shared/api/api-uploadImages";
 import IconButton from "../../shared/components/IconButton/IconButton";
 
 export default function RegistrationScreen({ navigation }) {
@@ -61,7 +61,6 @@ export default function RegistrationScreen({ navigation }) {
   async function handleSubmit() {
     hideKeyboard();
     const photo = await uploadPhotoToServer(uri, "userPhoto");
-
     dispatch(authSignUp({ ...state, photo }));
     setState({
       login: "",
