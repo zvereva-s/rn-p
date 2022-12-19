@@ -60,7 +60,9 @@ export default function RegistrationScreen({ navigation }) {
 
   async function handleSubmit() {
     hideKeyboard();
-    const photo = await uploadPhotoToServer(uri, "userPhoto");
+    if (uri) {
+      const photo = await uploadPhotoToServer(uri, "userPhoto");
+    }
     dispatch(authSignUp({ ...state, photo }));
     setState({
       login: "",
