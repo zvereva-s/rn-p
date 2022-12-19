@@ -3,8 +3,10 @@ import db from "../../firebase/config";
 export async function signUp({ email, password, login, photo }) {
   await db.auth().createUserWithEmailAndPassword(email, password);
   const curUser = db.auth().currentUser;
-  await curUser.updateProfile({ displayName: login, photoURL: photo });
-
+  await curUser.updateProfile({ displayName: login });
+  if (photo) {
+    await curUser.updateProfile({ photoURL: photo });
+  }
   return curUser;
 }
 
