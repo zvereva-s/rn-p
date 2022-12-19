@@ -103,6 +103,7 @@ export default function useMakePhoto() {
   return {
     makePhoto,
     uri,
+    setUri,
     chooseThePicture,
     markUp,
   };
