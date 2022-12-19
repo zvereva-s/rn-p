@@ -26,7 +26,7 @@ import IconButton from "../../shared/components/IconButton/IconButton";
 export default function ProfileScreen({ navigation }) {
   const dispatch = useDispatch();
 
-  const { makePhoto, uri, chooseThePicture, markUp } = useMakePhoto();
+  const { makePhoto, uri, setUri, chooseThePicture, markUp } = useMakePhoto();
   const { navigate } = navigation;
   const { user } = useAuth();
   const { userID, photoURL } = user;
@@ -43,13 +43,14 @@ export default function ProfileScreen({ navigation }) {
     };
   }, []);
 
-  // setTimeout(() => {
-  //   const photo = uploadPhotoToServer(uri, "userPhoto");
-  //   //! console
-  //   console.log("async photo profile", photo);
-  //   //!
-  //   dispatch(authUpdateProfilePhoto(photo));
-  // }, 250);
+  if (uri) {
+    async function func() {
+      const photo = await uploadPhotoToServer(uri, "userPhoto");
+
+      dispatch(authUpdateProfilePhoto(photo));
+    }
+    func();
+  }
 
   const Post = ({
     id,
