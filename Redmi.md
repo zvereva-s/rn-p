@@ -86,13 +86,23 @@ State Login Screen
 /// https://reactnavigation.org/docs/hiding-tabbar-in-screens/
 /// https://medium.com/@mspviraj/hide-bottom-tab-bar-on-a-specific-screen-in-react-navigation-6-0-26d31625d339
 
+<h3>Homework 07</h3>
+
+<img src='https://github.com/zvereva-s/rn-p/raw/main/images/deploy.jpg' width='250' heigth='auto'/>
+exp://exp.host/@zvereva/rn-p?release-channel=default
+
+<br>
+<br>
+
 <h5><i><b>Что нужно доделать </b></i></h5>
 
 ✅ загрузка аватарки в Профиле (выбор с файлов или сделать фото)
 
 - через redux обрабатывать запросы на посты
+
 - валидацию форм
 - валидация локаций - список какой-то ? - локацию выбирать со списка
+
 - лоадинги со стора и лоадинги на всех асинхронных функциях в компонентах
 - вывод ошибок пользователю
 - ховеры на кнопке Опубликовать
