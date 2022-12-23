@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { store } from "../store";
+
 import {
   authSignUp,
   authSignIn,
