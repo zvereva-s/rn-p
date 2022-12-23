@@ -111,3 +111,95 @@ async function fetchingCollection(setComments, id) {
     throw error;
   }
 }
+
+//TODO
+/* 
+1. Получить массив обьектов Постов. В каждом обьекте Поста  есть массив объектов Комментариев.
+2. Post obj
+  {
+    date (for sort)
+    locationCoords: {
+      latitude,
+      longtitude
+      }
+    locationName
+    login
+    name
+    photo (post image)
+    userID
+
+    comments: []
+    likes
+  }
+3. Comment obj
+
+    {
+    comment
+    date (txt)
+    dateID (for sort)
+    login
+    photoURL (of user)
+    }
+  
+4. Создать пост - создать обьект, отправить на базу, добавить в массив локально
+5. Создать коммент - создать обьект, отправить на базу, добавить в массив локально соответственному Посту по id
+
+6. Profile screen - отбирать с массива Posts - по userId массив постов. 
+*/
+
+/*
+export async function fetchPosts(setPosts) {
+  try {
+    await db
+      .firestore()
+      .collection("posts")
+      .onSnapshot(({ docs }) => {
+        docs.map((doc) => {
+          const comments = fetchComments(doc.id);
+
+          setPosts((prevState) =>
+            [
+              ...prevState,
+              {
+                ...doc.data(),
+                id: doc.id,
+                comments,
+              },
+            ].sort((firstPost, lastPost) => lastPost.date - firstPost.date)
+          );
+        });
+      });
+  } catch (error) {
+    console.log(
+      `%c[Error - fetchPosts(): ${error.message}]`,
+      "color: #F44336;"
+    );
+
+    throw error;
+  }
+}
+
+async function fetchComments(id) {
+  try {
+    const snapshot = await db
+      .firestore()
+      .collection("posts")
+      .doc(id)
+      .collection("comments")
+      .get();
+
+    const comments = snapshot.docs.map((doc) => ({ ...doc.data() }));
+
+    return comments;
+  } catch (error) {
+    console.log(
+      `%c[Error - fetchComments(): ${error.message}]`,
+      "color: #F44336;"
+    );
+
+    throw error;
+  }
+}
+
+
+*/
