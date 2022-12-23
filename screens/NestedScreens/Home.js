@@ -13,6 +13,7 @@ import IconButton from "../../shared/components/IconButton/IconButton";
 import useAuth from "../../shared/hooks/useAuth";
 
 import { authSignOut } from "../../redux/auth/auth-operations";
+// import { postsFetchPosts } from "../../redux/posts/posts-operations";
 import { fetchPosts } from "../../shared/api/api-posts";
 
 export default function Home({ route, navigation }) {
@@ -43,7 +44,7 @@ export default function Home({ route, navigation }) {
   }, [navigation]);
 
   useEffect(() => {
-    fetchPosts(comments, setComments, setPosts);
+    fetchPosts(comments, setPosts, setComments);
 
     return () => {
       setComments([]);
@@ -57,7 +58,7 @@ export default function Home({ route, navigation }) {
     locationName,
     locationCoords,
     id,
-    commentQuanity,
+    comments,
   }) => {
     const { latitude, longitude } = locationCoords;
 
@@ -73,7 +74,7 @@ export default function Home({ route, navigation }) {
           >
             <IconButton type="comment" focused={false} size="25" />
             <Text style={{ ...styles.feedbackTitle, color: "#BDBDBD" }}>
-              {commentQuanity}
+              {comments.lenght}
             </Text>
           </TouchableOpacity>
 
@@ -132,7 +133,7 @@ export default function Home({ route, navigation }) {
               name={item.name}
               locationName={item.locationName}
               locationCoords={item.locationCoords}
-              commentQuanity={item.comment}
+              comments={item.comments}
             />
           )}
         />
