@@ -88,8 +88,9 @@ State Login Screen
 
 <h3>Homework 07</h3>
 
-<img src='https://github.com/zvereva-s/rn-p/raw/main/images/deploy.jpg' width='250' heigth='auto'/>
+<img src='https://github.com/zvereva-s/rn-p/raw/main/images/deploy.jpg' width='500' heigth='auto'/>
 https://expo.dev/@zvereva/rn-p?serviceType=classic&distribution=expo-go
+exp://exp.host/@zvereva/rn-p?release-channel=default
 
 <br>
 <br>
